@@ -20,8 +20,8 @@ public class ClientServiceImpl implements ClientService {
 	}
 	
 	@Override
-	public void saveClient(Client client) {
-		this.clientRepository.save(client);
+	public Client saveClient(Client client) {
+	    return this.clientRepository.save(client);
 	}
 	
 	@Override
@@ -36,7 +36,10 @@ public class ClientServiceImpl implements ClientService {
 	
 	@Override
 	public void deleteClientById(Long id) {
-		this.clientRepository.deleteById(id);
+	    if (!clientRepository.existsById(id)) {
+	        throw new IllegalArgumentException("Cliente não encontrado com id: " + id);
+	    }
+	    this.clientRepository.deleteById(id);
 	}
 	
 }
