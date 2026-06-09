@@ -2,7 +2,13 @@
 package com.web.agua_facil.models;
 
 import jakarta.persistence.*;
-import lombok.Data;
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
+import jakarta.persistence.Entity;
+import jakarta.validation.constraints.NotBlank;
+
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -10,8 +16,11 @@ import org.springframework.security.core.userdetails.UserDetails;
 import java.util.Collection;
 import java.util.List;
 
-@Data
 @Entity
+@Getter
+@Setter
+@NoArgsConstructor
+@AllArgsConstructor
 @Table(name = "users")
 public class User implements UserDetails {
     
@@ -22,9 +31,11 @@ public class User implements UserDetails {
     @Column(name = "user_id")
     private Long id;
     
-    @Column(name = "username")
-    private String name;
+    @NotBlank(message = "Nome é um campo obrigatório")
+    @Column(name = "nome")
+    private String nome;
     
+    @NotBlank(message = "E-mail é um campo obrigatório")
     @Column(name = "email", unique = true)
     private String email;
     
@@ -37,14 +48,8 @@ public class User implements UserDetails {
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
-
-        if (this.role == UserRole.ADMIN) {
-            return List.of(new SimpleGrantedAuthority("ROLE_ADMIN"), new SimpleGrantedAuthority("ROLE_USER"));
-        }
-
-        return List.of(new SimpleGrantedAuthority("ROLE_USER"));
+        return List.of(new SimpleGrantedAuthority("ROLE_" + this.role.getRole()));
     }
-
     @Override
     public String getUsername() {
 
