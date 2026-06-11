@@ -2,17 +2,23 @@ package com.web.agua_facil.services.impl;
 
 import java.util.List;
 import java.util.Optional;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import com.web.agua_facil.models.Client;
+import com.web.agua_facil.models.UserRole;
 import com.web.agua_facil.services.ClientService;
 import com.web.agua_facil.repositories.ClientRepository;
+import com.web.agua_facil.repositories.UserRepository;
 
 @Service
 public class ClientServiceImpl implements ClientService {
 	
-	@Autowired
-	private ClientRepository clientRepository;
+	private final ClientRepository clientRepository;
+	private final UserRepository userRepository;
+
+	public ClientServiceImpl(ClientRepository clientRepository, UserRepository userRepository) {
+	    this.clientRepository = clientRepository;
+	    this.userRepository = userRepository;
+	}
 	
 	@Override
 	public List <Client> getAllClients(){
@@ -21,7 +27,9 @@ public class ClientServiceImpl implements ClientService {
 	
 	@Override
 	public Client saveClient(Client client) {
-	    return this.clientRepository.save(client);
+	    client.getUser().setRole(UserRole.CLIENTE);
+	    userRepository.save(client.getUser());
+	    return clientRepository.save(client);
 	}
 	
 	@Override

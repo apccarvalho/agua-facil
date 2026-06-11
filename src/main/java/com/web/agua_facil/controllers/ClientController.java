@@ -5,6 +5,7 @@ import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 import com.web.agua_facil.models.Client;
+import com.web.agua_facil.models.User;
 import com.web.agua_facil.services.ClientService;
 import jakarta.validation.Valid;
 
@@ -25,7 +26,9 @@ public class ClientController {
 
     @GetMapping("/client/create")
     public String create(Model model) {
-        model.addAttribute("client", new Client());
+        Client client = new Client();
+        client.setUser(new User());
+        model.addAttribute("client", client);
         return "client/create";
     }
 
