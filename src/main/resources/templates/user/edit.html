@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    <title>Editar Usuário — ÁguaFácil</title>
+    <link rel="stylesheet" th:href="@{/styles.css}" />
+</head>
+<body>
+
+    <div th:replace="~{fragments/navbar :: navbar}"></div>
+
+    <div class="page-wrapper">
+        <div class="page-header">
+            <h1>Editar Usuário</h1>
+            <p>Atualize os dados do usuário selecionado</p>
+        </div>
+
+        <div class="card card-form">
+            <form th:action="@{/user/edit/{id}(id=${user.id})}"
+                  th:object="${user}" method="post">
+                  
+                <!-- ID Oculto (MUITO IMPORTANTE para não dar erro 405) -->
+                <input type="hidden" th:field="*{id}" />
+                
+                <!-- Caixa de erros globais -->
+                <div th:if="${#fields.hasErrors('*')}" class="alert alert-danger">
+                    <p th:each="err : ${#fields.errors('*')}" th:text="${err}"></p>
+                </div>
+                
+                <!-- Dados de acesso -->
+                <p class="form-section-title">Dados de Acesso</p>
+
+                <div class="form-row">
+                    <div class="form-group">
+                        <label>Nome completo</label>
+                        <input class="form-control"
+                               th:class="${#fields.hasErrors('nome')} ? 'form-control is-invalid' : 'form-control'"
+                               type="text" th:field="*{nome}"/>
+                        <span class="error-msg" th:if="${#fields.hasErrors('nome')}"
+                              th:errors="*{nome}"></span>
+                    </div>
+                    <div class="form-group">
+                        <label>E-mail</label>
+                        <input class="form-control"
+                               th:class="${#fields.hasErrors('email')} ? 'form-control is-invalid' : 'form-control'"
+                               type="email" th:field="*{email}"/>
+                        <span class="error-msg" th:if="${#fields.hasErrors('email')}"
+                              th:errors="*{email}"></span>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label>Perfil</label>
+                    <select class="form-control" th:field="*{role}" id="roleSelect"
+                            onchange="toggleCpfField()">
+                        <option value="">Selecione um perfil</option>
+                        <option th:each="role : ${roles}"
+                                th:value="${role}"
+                                th:text="${role}">
+                        </option>
+                    </select>
+                    <span class="error-msg" th:if="${#fields.hasErrors('role')}"
+                          th:errors="*{role}"></span>
+                </div>
+
+                <div class="form-group" id="cpfField" style="display:none;">
+                    <label>
+                        CPF
+                        <span class="label-hint">(será a senha inicial)</span>
+                    </label>
+                    <input class="form-control" type="text" name="cpf"
+                           placeholder="Somente números" maxlength="11"/>
+                    <small class="label-hint" style="margin-left: 0;">
+                        Obrigatório para o perfil Cliente
+                    </small>
+                </div>
+
+                <!-- Senha — visível apenas para FUNCIONARIO e LEITOR -->
+                <div class="form-group" id="senhaField">
+                    <label>Senha</label>
+                    <input class="form-control"
+                           th:class="${#fields.hasErrors('password')} ? 'form-control is-invalid' : 'form-control'"
+                           type="password" th:field="*{password}" placeholder="Digite para alterar ou deixe em branco"/>
+                    <span class="error-msg" th:if="${#fields.hasErrors('password')}"
+                          th:errors="*{password}"></span>
+                </div>
+
+                <!-- Ações -->
+                <div class="form-actions">
+                    <button type="submit" class="btn btn-primary">Salvar Alterações</button>
+                    <a th:href="@{/user}" class="btn btn-secondary">Cancelar</a>
+                </div>
+            </form>
+        </div>
+    </div>
+
+
+</body>
+</html>

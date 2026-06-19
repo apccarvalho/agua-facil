@@ -1,0 +1,358 @@
+@import url('https://fonts.googleapis.com/css2?family=Source+Sans+3:wght@400;500;600;700&display=swap');
+
+* { box-sizing: border-box; margin: 0; padding: 0; }
+
+body {
+    font-family: 'Source Sans 3', sans-serif;
+    background-color: #f1f5f9;
+    color: #1e293b;
+}
+
+.navbar {
+    background-color: #1e3a8a;
+    padding: 0 2rem;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    height: 60px;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.2);
+}
+
+.navbar-brand {
+    color: #ffffff;
+    font-size: 1.25rem;
+    font-weight: 700;
+    text-decoration: none;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+}
+
+.navbar-brand span.gota { font-size: 1.4rem; }
+
+.navbar-menu {
+    display: flex;
+    align-items: center;
+    gap: 0.25rem;
+    list-style: none;
+}
+
+.navbar-menu a {
+    color: #bfdbfe;
+    text-decoration: none;
+    padding: 0.4rem 0.85rem;
+    border-radius: 6px;
+    font-size: 0.9rem;
+    font-weight: 500;
+    transition: background 0.15s, color 0.15s;
+}
+
+.navbar-menu a:hover,
+.navbar-menu a.active {
+    background-color: rgba(255,255,255,0.15);
+    color: #ffffff;
+}
+
+.navbar-user {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    color: #bfdbfe;
+    font-size: 0.88rem;
+}
+
+.navbar-user span { font-weight: 500; color: #ffffff; }
+
+.btn-logout {
+    background: rgba(255,255,255,0.12);
+    border: 1px solid rgba(255,255,255,0.25);
+    color: #ffffff;
+    padding: 0.3rem 0.85rem;
+    border-radius: 6px;
+    font-size: 0.85rem;
+    cursor: pointer;
+    text-decoration: none;
+    transition: background 0.15s;
+}
+
+.btn-logout:hover { background: rgba(255,255,255,0.22); }
+
+/* Layout principal */
+.page-wrapper {
+    min-height: calc(100vh - 60px);
+    padding: 2rem;
+}
+
+.page-header {
+    margin-bottom: 1.5rem;
+}
+
+.page-header h1 {
+    font-size: 1.5rem;
+    font-weight: 700;
+    color: #1e3a8a;
+}
+
+.page-header p {
+    color: #64748b;
+    font-size: 0.95rem;
+    margin-top: 0.2rem;
+}
+
+/* Card */
+.card {
+    background: #ffffff;
+    border-radius: 10px;
+    box-shadow: 0 1px 4px rgba(0,0,0,0.08);
+    padding: 1.5rem;
+}
+
+/* Tabela */
+table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 0.93rem;
+}
+
+thead tr {
+    background-color: #eff6ff;
+    border-bottom: 2px solid #bfdbfe;
+}
+
+thead th {
+    padding: 0.75rem 1rem;
+    text-align: left;
+    font-weight: 600;
+    color: #1e3a8a;
+    font-size: 0.85rem;
+    text-transform: uppercase;
+    letter-spacing: 0.04em;
+}
+
+tbody tr {
+    border-bottom: 1px solid #f1f5f9;
+    transition: background 0.1s;
+}
+
+tbody tr:hover { background-color: #f8fafc; }
+
+tbody td {
+    padding: 0.75rem 1rem;
+    color: #334155;
+}
+
+/* Botões */
+.btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.35rem;
+    padding: 0.45rem 1rem;
+    border-radius: 6px;
+    font-size: 0.875rem;
+    font-weight: 600;
+    text-decoration: none;
+    border: none;
+    cursor: pointer;
+    transition: opacity 0.15s, transform 0.1s;
+}
+
+.btn:hover { opacity: 0.88; transform: translateY(-1px); }
+.btn:active { transform: translateY(0); }
+
+.btn-primary { background-color: #1d4ed8; color: #ffffff; }
+.btn-warning { background-color: #f59e0b; color: #ffffff; }
+.btn-danger  { background-color: #dc2626; color: #ffffff; }
+.btn-secondary { background-color: #e2e8f0; color: #475569; }
+
+/* Formulário */
+.form-group {
+    margin-bottom: 1.25rem;
+}
+
+.form-group label {
+    display: block;
+    font-size: 0.875rem;
+    font-weight: 600;
+    color: #374151;
+    margin-bottom: 0.4rem;
+}
+
+.form-control {
+    width: 100%;
+    padding: 0.55rem 0.85rem;
+    border: 1.5px solid #cbd5e1;
+    border-radius: 7px;
+    font-size: 0.93rem;
+    font-family: inherit;
+    color: #1e293b;
+    background: #ffffff;
+    transition: border-color 0.15s, box-shadow 0.15s;
+}
+
+.form-control:focus {
+    outline: none;
+    border-color: #1d4ed8;
+    box-shadow: 0 0 0 3px rgba(29,78,216,0.12);
+}
+
+.form-control.is-invalid { border-color: #dc2626; }
+
+.error-msg {
+    color: #dc2626;
+    font-size: 0.8rem;
+    margin-top: 0.3rem;
+}
+
+.form-row {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 1rem;
+}
+
+/* Badge status */
+.badge {
+    padding: 0.25rem 0.65rem;
+    border-radius: 999px;
+    font-size: 0.78rem;
+    font-weight: 600;
+}
+
+.badge-blue   { background: #dbeafe; color: #1e40af; }
+.badge-green  { background: #dcfce7; color: #15803d; }
+.badge-red    { background: #fee2e2; color: #b91c1c; }
+.badge-yellow { background: #fef9c3; color: #92400e; }
+
+/* Toolbar acima da tabela */
+.toolbar {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 1.25rem;
+}
+
+/* Alerta */
+.alert {
+    padding: 0.75rem 1rem;
+    border-radius: 7px;
+    margin-bottom: 1rem;
+    font-size: 0.9rem;
+}
+
+.alert-success { background: #dcfce7; color: #15803d; border-left: 4px solid #16a34a; }
+.alert-danger  { background: #fee2e2; color: #b91c1c; border-left: 4px solid #dc2626; }
+
+/* --- Utilitários de Formulário --- */
+
+/* Limita a largura dos cards de formulário */
+.card-form {
+    max-width: 680px;
+}
+
+/* Títulos separadores dentro do formulário */
+.form-section-title {
+    font-weight: 700;
+    color: #1e3a8a;
+    margin: 1.25rem 0 1rem;
+    padding-bottom: 0.5rem;
+    border-bottom: 2px solid #eff6ff;
+}
+
+/* Remove a margem superior do primeiro título para alinhar melhor */
+.form-section-title:first-of-type {
+    margin-top: 0;
+}
+
+/* Dicas e observações nos labels (ex: "será a senha inicial") */
+.label-hint {
+    color: #64748b;
+    font-weight: 400;
+    font-size: 0.85rem;
+    margin-left: 0.25rem;
+}
+
+/* Container flexível para alinhar os botões no final do formulário */
+.form-actions {
+    display: flex;
+    gap: 0.75rem;
+    margin-top: 1.5rem;
+}
+
+/* Estilo para inputs bloqueados (readonly ou disabled) */
+.form-control[readonly], 
+.form-control:disabled {
+    background-color: #f8fafc;
+    color: #64748b;
+    cursor: not-allowed;
+    border-color: #e2e8f0;
+}
+
+/* --- Telas de Perfil e Exibição de Dados --- */
+
+/* Grid responsivo para os cards */
+.profile-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    gap: 1.25rem;
+}
+
+/* Faz um card ocupar a largura total do grid */
+.grid-full-width {
+    grid-column: 1 / -1;
+}
+
+/* Título das seções de leitura */
+.section-title {
+    font-weight: 700;
+    color: #1e3a8a;
+    margin-bottom: 1rem;
+    padding-bottom: 0.5rem;
+    border-bottom: 2px solid #eff6ff;
+}
+
+/* Lista vertical de dados */
+.data-list {
+    display: flex;
+    flex-direction: column;
+    gap: 0.85rem;
+}
+
+/* Rótulo da informação (ex: "E-mail") */
+.data-label {
+    color: #94a3b8;
+    font-size: 0.78rem;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    display: block;
+    margin-bottom: 0.15rem;
+}
+
+/* Valor da informação (ex: "joao@email.com") */
+.data-value {
+    font-weight: 600;
+    color: #1e293b;
+}
+
+/* Mensagem centralizada para tabelas vazias */
+.empty-state {
+    text-align: center;
+    color: #94a3b8;
+    padding: 2rem;
+}
+
+/* Espaçamento para botões abaixo das tabelas */
+.table-actions {
+    margin-top: 1.25rem;
+}
+
+/* Texto descritivo na toolbar (ex: contador de registros) */
+.toolbar-info {
+    color: #64748b;
+    font-size: 0.9rem;
+}
+
+/* Agrupamento de botões de ação dentro das tabelas */
+.action-buttons {
+    display: flex;
+    gap: 0.5rem;
+    align-items: center;
+}

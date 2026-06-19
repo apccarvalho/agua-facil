@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+<head>
+    <meta charset="UTF-8"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    <title>Minha Conta — ÁguaFácil</title>
+    <link rel="stylesheet" th:href="@{/styles.css}" />
+</head>
+<body>
+
+    <div th:replace="~{fragments/navbar :: navbar}"></div>
+
+    <div class="page-wrapper">
+        <div class="page-header">
+            <h1>Minha Conta</h1>
+            <p>Seus dados cadastrais e endereço de cobrança</p>
+        </div>
+
+        <div class="profile-grid">
+
+            <div class="card">
+                <p class="section-title">Dados Pessoais</p>
+
+                <div class="data-list">
+                    <div>
+                        <span class="data-label">Nome</span>
+                        <p class="data-value" th:text="${client.user.nome}"></p>
+                    </div>
+                    <div>
+                        <span class="data-label">E-mail</span>
+                        <p class="data-value" th:text="${client.user.email}"></p>
+                    </div>
+                    <div>
+                        <span class="data-label">CPF</span>
+                        <p class="data-value" th:text="${client.cpf}"></p>
+                    </div>
+                    <div>
+                        <span class="data-label">Telefone</span>
+                        <p class="data-value" th:text="${client.telefone}"></p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="card">
+                <p class="section-title">Endereço</p>
+
+                <div class="data-list">
+                    <div>
+                        <span class="data-label">Rua</span>
+                        <p class="data-value" th:text="${client.rua}"></p>
+                    </div>
+                    <div>
+                        <span class="data-label">Número</span>
+                        <p class="data-value" th:text="${client.numero}"></p>
+                    </div>
+                    <div>
+                        <span class="data-label">Bairro</span>
+                        <p class="data-value" th:text="${client.bairro}"></p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="card grid-full-width">
+                <p class="section-title">Últimas Faturas</p>
+
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Mês de Referência</th>
+                            <th>Consumo (m³)</th>
+                            <th>Valor</th>
+                            <th>Vencimento</th>
+                            <th>Status</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td colspan="5" class="empty-state">
+                                Nenhuma fatura disponível no momento.
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+
+                <div class="table-actions">
+                    <a th:href="@{/cliente/faturas}" class="btn btn-primary">Ver todas as faturas</a>
+                </div>
+            </div>
+        </div>
+    </div>
+
+</body>
+</html>

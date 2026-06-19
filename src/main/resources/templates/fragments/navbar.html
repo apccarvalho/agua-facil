@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+
+<nav th:fragment="navbar">
+    <header class="navbar">
+        <a class="navbar-brand" th:href="@{/dashboard}">
+            <span class="gota">💧</span> ÁguaFácil
+        </a>
+
+        <ul class="navbar-menu">
+            <li sec:authorize="hasRole('FUNCIONARIO')">
+                <a th:href="@{/user}">Usuários</a>
+            </li>
+            <li sec:authorize="hasRole('FUNCIONARIO')">
+                <a th:href="@{/client}">Clientes</a>
+            </li>
+
+            <li sec:authorize="hasRole('LEITOR')">
+                <a th:href="@{/leitor/leituras}">Leituras</a>
+            </li>
+
+            <li sec:authorize="hasRole('CLIENTE')">
+                <a th:href="@{/cliente/faturas}">Faturas</a>
+            </li>
+            <li sec:authorize="hasRole('CLIENTE')">
+                <a th:href="@{/cliente/historico}">Histórico</a>
+            </li>
+        </ul>
+
+        <div class="navbar-user">
+            Olá, <span sec:authentication="name"></span>
+            <a class="btn-logout" th:href="@{/logout}">Sair</a>
+        </div>
+    </header>
+</nav>
+</html>

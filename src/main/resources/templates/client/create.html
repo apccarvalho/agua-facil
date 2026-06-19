@@ -1,0 +1,126 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    <title>Novo Cliente — ÁguaFácil</title>
+    <link rel="stylesheet" th:href="@{/styles.css}" />
+</head>
+<body>
+
+    <div th:replace="~{fragments/navbar :: navbar}"></div>
+
+    <div class="page-wrapper">
+        <div class="page-header">
+            <h1>Novo Cliente</h1>
+            <p>Preencha os dados para cadastrar um novo cliente. A senha inicial será o CPF informado.</p>
+        </div>
+
+        <div class="card card-form">
+            <form th:action="@{/client/save}" th:object="${client}" method="post">
+                
+                <div th:if="${#fields.hasErrors('*')}" class="alert alert-danger">
+                    <p th:each="err : ${#fields.errors('*')}" th:text="${err}"></p>
+                </div>
+
+                <p class="form-section-title">Dados de Acesso</p>
+
+                <div class="form-row">
+                    <div class="form-group">
+                        <label>Nome completo</label>
+                        <input class="form-control"
+                               th:class="${#fields.hasErrors('user.nome')} ? 'form-control is-invalid' : 'form-control'"
+                               type="text" th:field="*{user.nome}" placeholder="Nome completo"/>
+                        <span class="error-msg" th:if="${#fields.hasErrors('user.nome')}"
+                              th:errors="*{user.nome}"></span>
+                    </div>
+                    <div class="form-group">
+                        <label>E-mail</label>
+                        <input class="form-control"
+                               th:class="${#fields.hasErrors('user.email')} ? 'form-control is-invalid' : 'form-control'"
+                               type="email" th:field="*{user.email}" placeholder="email@exemplo.com"/>
+                        <span class="error-msg" th:if="${#fields.hasErrors('user.email')}"
+                              th:errors="*{user.email}"></span>
+                    </div>
+                </div>
+
+                <p class="form-section-title">Dados Pessoais</p>
+
+                <div class="form-row">
+                    <div class="form-group">
+                        <label>CPF <span class="label-hint">(será a senha inicial)</span></label>
+                        <input class="form-control cpf-mask"
+                               th:class="${#fields.hasErrors('cpf')} ? 'form-control is-invalid cpf-mask' : 'form-control cpf-mask'"
+                               type="text" th:field="*{cpf}" placeholder="000.000.000-00" maxlength="14"/>
+                        <span class="error-msg" th:if="${#fields.hasErrors('cpf')}"
+                              th:errors="*{cpf}"></span>
+                    </div>
+                    <div class="form-group">
+                        <label>Telefone</label>
+                        <input class="form-control"
+                               th:class="${#fields.hasErrors('telefone')} ? 'form-control is-invalid' : 'form-control'"
+                               type="text" th:field="*{telefone}" placeholder="(00) 00000-0000"/>
+                        <span class="error-msg" th:if="${#fields.hasErrors('telefone')}"
+                              th:errors="*{telefone}"></span>
+                    </div>
+                </div>
+
+                <p class="form-section-title">Endereço</p>
+
+                <div class="form-group">
+                    <label>Rua</label>
+                    <input class="form-control"
+                           th:class="${#fields.hasErrors('rua')} ? 'form-control is-invalid' : 'form-control'"
+                           type="text" th:field="*{rua}" placeholder="Nome da rua"/>
+                    <span class="error-msg" th:if="${#fields.hasErrors('rua')}"
+                          th:errors="*{rua}"></span>
+                </div>
+
+                <div class="form-row">
+                    <div class="form-group">
+                        <label>Número</label>
+                        <input class="form-control"
+                               th:class="${#fields.hasErrors('numero')} ? 'form-control is-invalid' : 'form-control'"
+                               type="text" th:field="*{numero}" placeholder="Ex: 123 ou 12A"/>
+                        <span class="error-msg" th:if="${#fields.hasErrors('numero')}"
+                              th:errors="*{numero}"></span>
+                    </div>
+                    <div class="form-group">
+                        <label>Bairro</label>
+                        <input class="form-control"
+                               th:class="${#fields.hasErrors('bairro')} ? 'form-control is-invalid' : 'form-control'"
+                               type="text" th:field="*{bairro}" placeholder="Nome do bairro"/>
+                        <span class="error-msg" th:if="${#fields.hasErrors('bairro')}"
+                              th:errors="*{bairro}"></span>
+                    </div>
+                </div>
+
+                <div class="form-actions">
+                    <button type="submit" class="btn btn-primary">Cadastrar Cliente</button>
+                    <a th:href="@{/client}" class="btn btn-secondary">Cancelar</a>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- Script de Máscara para o CPF -->
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const cpfInput = document.querySelector('.cpf-mask');
+
+            cpfInput.addEventListener('input', function(e) {
+                let value = e.target.value;
+                
+                value = value.replace(/\D/g, "");
+                
+                value = value.replace(/(\d{3})(\d)/, "$1.$2");
+                value = value.replace(/(\d{3})(\d)/, "$1.$2");
+                value = value.replace(/(\d{3})(\d{1,2})$/, "$1-$2");
+                
+                e.target.value = value;
+            });
+        });
+    </script>
+
+</body>
+</html>

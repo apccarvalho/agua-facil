@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+<head>
+    <meta charset="UTF-8"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    <title>Clientes — ÁguaFácil</title>
+    <link rel="stylesheet" th:href="@{/styles.css}" />
+</head>
+<body>
+
+    <div th:replace="~{fragments/navbar :: navbar}"></div>
+
+    <div class="page-wrapper">
+        <div class="page-header">
+            <h1>Clientes</h1>
+            <p>Gerencie os clientes cadastrados no sistema</p>
+        </div>
+
+        <div class="card">
+            <div class="toolbar">
+                <span th:text="${clientsList.size()} + ' cliente(s) cadastrado(s)'"
+                      style="color:#64748b; font-size:0.9rem;"></span>
+                <a th:href="@{/client/create}" class="btn btn-primary">
+                    + Novo Cliente
+                </a>
+            </div>
+
+            <table>
+                <thead>
+                    <tr>
+                        <th>#</th>
+                        <th>Nome</th>
+                        <th>CPF</th>
+                        <th>Telefone</th>
+                        <th>Endereço</th>
+                        <th>Ações</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr th:if="${clientsList.isEmpty()}">
+                        <td colspan="6" style="text-align:center; color:#94a3b8; padding: 2rem;">
+                            Nenhum cliente cadastrado.
+                        </td>
+                    </tr>
+                    <tr th:each="client : ${clientsList}">
+                        <td th:text="${client.id}"></td>
+                        <td th:text="${client.user.nome}"></td>
+                        <td th:text="${client.cpf}"></td>
+                        <td th:text="${client.telefone}"></td>
+                        <td th:text="${client.rua + ', ' + client.numero + ' — ' + client.bairro}"></td>
+                        <td>
+                            <a th:href="@{/client/edit/{id}(id=${client.id})}"
+                               class="btn btn-warning" style="margin-right:0.4rem;">Editar</a>
+                            <form th:action="@{/client/delete/{id}(id=${client.id})}"
+                                  method="post" style="display:inline;">
+                                
+                                <button type="submit" class="btn btn-danger"
+                                        onclick="return confirm('Confirmar exclusão deste cliente?')">
+                                    Excluir
+                                </button>
+                            </form>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+</body>
+</html>
