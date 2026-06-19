@@ -4,7 +4,7 @@
 
 <nav th:fragment="navbar">
     <header class="navbar">
-        <a class="navbar-brand" th:href="@{/dashboard}">
+        <a class="navbar-brand" th:href="@{/index}">
             <span class="gota">💧</span> ÁguaFácil
         </a>
 
@@ -16,21 +16,26 @@
                 <a th:href="@{/client}">Clientes</a>
             </li>
 
-            <li sec:authorize="hasRole('LEITOR')">
+            <li sec:authorize="hasAnyRole('LEITOR', 'FUNCIONARIO')">
                 <a th:href="@{/leitor/leituras}">Leituras</a>
             </li>
 
-            <li sec:authorize="hasRole('CLIENTE')">
+            <li sec:authorize="hasAnyRole('CLIENTE', 'FUNCIONARIO')">
                 <a th:href="@{/cliente/faturas}">Faturas</a>
             </li>
-            <li sec:authorize="hasRole('CLIENTE')">
+            <li sec:authorize="hasAnyRole('CLIENTE', 'FUNCIONARIO')">
                 <a th:href="@{/cliente/historico}">Histórico</a>
             </li>
         </ul>
 
         <div class="navbar-user">
-            Olá, <span sec:authentication="name"></span>
-            <a class="btn-logout" th:href="@{/logout}">Sair</a>
+            <span sec:authentication="principal.nome"></span>
+            
+            <form th:action="@{/logout}" method="post" style="margin: 0;">
+                <button type="submit" class="btn-logout" style="border: none; outline: none; font-family: inherit;">
+                    Sair
+                </button>
+            </form>
         </div>
     </header>
 </nav>
