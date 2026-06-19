@@ -10,7 +10,7 @@ import com.web.agua_facil.services.UserService;
 import jakarta.validation.Valid;
 
 @Controller
-@RequestMapping("/funcionario/usuarios")
+@RequestMapping("/user")
 public class UserController {
 
     private final UserService userService;
@@ -22,14 +22,14 @@ public class UserController {
     @GetMapping
     public String index(Model model) {
         model.addAttribute("usersList", userService.getAllUsers());
-        return "funcionario/usuarios/index";
+        return "user/index";
     }
 
     @GetMapping("/novo")
     public String create(Model model) {
         model.addAttribute("user", new User());
         model.addAttribute("roles", UserRole.values());
-        return "funcionario/usuarios/create";
+        return "user/create";
     }
 
     @PostMapping("/save")
@@ -38,34 +38,33 @@ public class UserController {
                        Model model) {
         if (result.hasErrors()) {
             model.addAttribute("roles", UserRole.values());
-            return "funcionario/usuarios/create";
+            return "user/create";
         }
         userService.saveUser(user, cpf);
-        return "redirect:/funcionario/usuarios";
+        return "redirect:/user";
     }
 
     @GetMapping("/edit/{id}")
     public String showEditForm(@PathVariable Long id, Model model) {
         model.addAttribute("user", userService.getUserById(id));
         model.addAttribute("roles", UserRole.values());
-        return "funcionario/usuarios/edit";
+        return "user/edit";
     }
 
     @PostMapping("/edit/{id}")
-    public String edit(@PathVariable Long id, @Valid @ModelAttribute("user") User user,
-                       BindingResult result, Model model) {
+    public String update(@PathVariable("id") Long id, @Valid @ModelAttribute("user") User user, BindingResult result) {
         if (result.hasErrors()) {
-            model.addAttribute("roles", UserRole.values());
-            return "funcionario/usuarios/edit";
+            return "user/edit";
         }
-        user.setId(id);
-        userService.saveUser(user, null);
-        return "redirect:/funcionario/usuarios";
+     
+        userService.updateUser(id, user);
+        
+        return "redirect:/user"; 
     }
 
     @PostMapping("/delete/{id}")
     public String delete(@PathVariable Long id) {
         userService.deleteUserById(id);
-        return "redirect:/funcionario/usuarios";
+        return "redirect:/user";
     }
 }

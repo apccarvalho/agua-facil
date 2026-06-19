@@ -9,4 +9,5 @@ public interface UserService {
     User getUserById(Long id);
     void deleteUserById(Long id);
     User findByEmail(String email);
+    User updateUser(Long id, User userEditado);
 }

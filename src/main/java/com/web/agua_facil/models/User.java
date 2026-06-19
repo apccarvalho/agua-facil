@@ -50,6 +50,8 @@ public class User implements UserDetails {
     public Collection<? extends GrantedAuthority> getAuthorities() {
         return List.of(new SimpleGrantedAuthority("ROLE_" + this.role.getRole()));
     }
+    
+    
     @Override
     public String getUsername() {
 

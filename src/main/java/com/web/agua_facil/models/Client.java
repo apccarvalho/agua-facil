@@ -34,7 +34,7 @@ public class Client {
     private User user;
 
     @NotBlank(message = "CPF é um campo obrigatório")
-    @Size(min = 11, max = 11, message = "CPF deve conter exatamente 11 números")
+    @Size(min = 14, max = 14, message = "CPF deve conter exatamente 11 números")
     @Column(name = "cpf", nullable = false, unique = true)
     private String cpf;
 
