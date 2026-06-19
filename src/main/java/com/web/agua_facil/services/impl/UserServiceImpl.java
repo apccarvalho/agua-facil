@@ -58,19 +58,19 @@ public class UserServiceImpl implements UserService {
     @Transactional
     public User updateUser(Long id, User userEditado) {
 
-        User usuarioExistente = userRepository.findById(id)
+        User existingUser = userRepository.findById(id)
             .orElseThrow(() -> new IllegalArgumentException("Usuário não encontrado com id: " + id));
 
-        usuarioExistente.setNome(userEditado.getNome());
-        usuarioExistente.setEmail(userEditado.getEmail());
-        usuarioExistente.setRole(userEditado.getRole());
+        existingUser.setNome(userEditado.getNome());
+        existingUser.setEmail(userEditado.getEmail());
+        existingUser.setRole(userEditado.getRole());
 
         String novaSenha = userEditado.getPassword();
         if (novaSenha != null && !novaSenha.trim().isEmpty()) {
-            usuarioExistente.setPassword(passwordEncoder.encode(novaSenha));
+        	existingUser.setPassword(passwordEncoder.encode(novaSenha));
         }
 
-        return userRepository.save(usuarioExistente);
+        return userRepository.save(existingUser);
     }
 
     @Override

@@ -59,4 +59,27 @@ public class ClientServiceImpl implements ClientService {
 	    this.clientRepository.deleteById(id);
 	}
 	
+	@Override
+    @Transactional
+    public Client updateClient(Long id, Client client) {
+        
+        Client existingClient = clientRepository.findById(id)
+                .orElseThrow(() -> new IllegalArgumentException("Cliente não encontrado com o ID: " + id));
+
+        existingClient.setTelefone(client.getTelefone());
+        existingClient.setRua(client.getRua());
+        existingClient.setNumero(client.getNumero());
+        existingClient.setBairro(client.getBairro());
+
+        User associatedUser = existingClient.getUser();
+        if (associatedUser != null) {
+            associatedUser.setNome(client.getUser().getNome());
+            associatedUser.setEmail(client.getUser().getEmail());
+
+        }
+
+        return clientRepository.save(existingClient);
+    }
+
+	
 }

@@ -4,6 +4,8 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
+
 import com.web.agua_facil.models.Client;
 import com.web.agua_facil.models.User;
 import com.web.agua_facil.services.ClientService;
@@ -48,12 +50,17 @@ public class ClientController {
     }
 
     @PostMapping("/client/edit/{id}")
-    public String edit(@PathVariable Long id, @Valid @ModelAttribute("client") Client client, BindingResult result) {
+    public String edit(@PathVariable Long id, @Valid @ModelAttribute("client") Client client, 
+                       BindingResult result, RedirectAttributes redirectAttributes) {
+        
         if (result.hasErrors()) {
             return "client/edit";
         }
-        client.setId(id);
-        clientService.saveClient(client);
+        
+        clientService.updateClient(id, client);
+        
+        redirectAttributes.addFlashAttribute("mensagemSucesso", "Cliente atualizado com sucesso!");
+        
         return "redirect:/client";
     }
 
