@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+<head>
+    <meta charset="UTF-8"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    <title>Propriedades — ÁguaFácil</title>
+    <link rel="stylesheet" th:href="@{/styles.css}" />
+    
+</head>
+<body>
+
+    <div th:replace="~{fragments/navbar :: navbar}"></div>
+
+    <div class="page-wrapper">
+        <div class="page-header">
+            <h1>Propriedades</h1>
+            <p>Gerencie os imóveis cadastrados no sistema</p>
+        </div>
+
+        <div class="card">
+            <div class="toolbar">
+                <span class="toolbar-info" th:text="${propertiesList.size()} + ' propriedade(s) cadastrada(s)'"></span>
+                <a th:href="@{/property/create}" class="btn btn-primary">
+                    + Nova Propriedade
+                </a>
+            </div>
+
+            <table>
+                <thead>
+                    <tr>
+                        <th>Matrícula</th>
+                        <th>Endereço</th>
+                        <th>Cidade/UF</th>
+                        <th>Categoria</th>
+                        <th>Proprietário</th>
+                        <th>Ações</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr th:if="${propertiesList.isEmpty()}">
+                        <td colspan="6" class="empty-state">
+                            Nenhuma propriedade cadastrada.
+                        </td>
+                    </tr>
+                    <tr th:each="property : ${propertiesList}">
+                        <td th:text="${property.matricula}"></td>
+                        <td>
+                            <span th:text="${property.logradouro + ', ' + property.numero}"></span><br/>
+                            <small style="color: #64748b;" th:text="${property.bairro}"></small>
+                        </td>
+                        <td th:text="${property.cidade + '/' + property.uf}"></td>
+                        <td>
+                            <span class="badge badge-blue" th:text="${property.categoria}"></span>
+                        </td>
+                        <td th:text="${property.cliente.user.nome}"></td>
+                        <td>
+                            <div class="action-buttons">
+                                <a th:href="@{/property/edit/{id}(id=${property.id})}"
+                                   class="btn btn-warning">Editar</a>
+                                
+                                <form th:action="@{/property/delete/{id}(id=${property.id})}"
+                                      method="post" style="display:inline;">
+                                    <button type="submit" class="btn btn-danger"
+                                            onclick="return confirm('Confirmar exclusão desta propriedade?')">
+                                        Excluir
+                                    </button>
+                                </form>
+                            </div>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+</body>
+</html>
