@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    <title>Faixas de Tarifa — ÁguaFácil</title>
+    <link rel="stylesheet" th:href="@{/styles.css}" />
+</head>
+<body>
+
+    <div th:replace="~{fragments/navbar :: navbar}"></div>
+
+    <div class="page-wrapper">
+        <div class="page-header">
+            <h1>Faixas de Tarifa</h1>
+            <p>Gerencie a estrutura de cobrança em blocos para o cálculo das faturas de água.</p>
+        </div>
+
+        <div th:if="${mensagemSucesso}" class="alert alert-success">
+            <span th:text="${mensagemSucesso}"></span>
+        </div>
+        <div th:if="${erro}" class="alert alert-danger">
+            <span th:text="${erro}"></span>
+        </div>
+
+        <div class="card">
+            <div class="toolbar">
+                <span class="toolbar-info" th:text="${tariffsList.size()} + ' faixa(s) cadastrada(s)'"></span>
+                <a th:href="@{/tariff/create}" class="btn btn-primary">
+                    + Nova Faixa
+                </a>
+            </div>
+
+            <table>
+                <thead>
+                    <tr>
+                        <th># ID</th>
+                        <th>Descrição</th>
+                        <th>Intervalo de Consumo</th>
+                        <th>Valor (R$ por m&sup3;)</th>
+                        <th>Ações</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr th:if="${tariffsList.isEmpty()}">
+                        <td colspan="5" class="empty-state">
+                            Nenhuma faixa de tarifa cadastrada no sistema.
+                        </td>
+                    </tr>
+                    
+                    <tr th:each="tariff : ${tariffsList}">
+                        <td th:text="${tariff.id}"></td>
+                        
+                        <td>
+                            <strong th:text="${tariff.descricao}"></strong>
+                        </td>
+                        
+                        <td>
+                            <span class="badge badge-blue" 
+                                  th:text="${tariff.consumoMinimo} + ' a ' + ${tariff.consumoMaximo} + ' m&sup3;'">
+                            </span>
+                        </td>
+                        
+                        <td class="text-money">
+                            <span th:text="'R$ ' + ${#numbers.formatDecimal(tariff.valorPorM3, 1, 'POINT', 2, 'COMMA')}"></span>
+                        </td>
+                        
+                        <td>
+                            <div class="action-buttons">
+                                <a th:href="@{/tariff/edit/{id}(id=${tariff.id})}"
+                                   class="btn btn-warning">Editar</a>
+                                
+                                <form th:action="@{/tariff/delete/{id}(id=${tariff.id})}"
+                                      method="post" style="display:inline;">
+                                    <button type="submit" class="btn btn-danger"
+                                            onclick="return confirm('ATENÇÃO: Deseja realmente excluir esta faixa de tarifa? Isso pode afetar o cálculo de faturas futuras.')">
+                                        Excluir
+                                    </button>
+                                </form>
+                            </div>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+</body>
+</html>

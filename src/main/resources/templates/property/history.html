@@ -1,0 +1,133 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    <title>Histórico do Imóvel — ÁguaFácil</title>
+    <link rel="stylesheet" th:href="@{/styles.css}" />
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+</head>
+<body>
+
+    <div th:replace="~{fragments/navbar :: navbar}"></div>
+
+    <div class="page-wrapper">
+        <div class="page-header">
+            <h1>Histórico e Extrato do Imóvel</h1>
+            <p>Análise de consumo e controle financeiro da matrícula <strong th:text="${property.matricula}"></strong>.</p>
+        </div>
+
+        <div class="toolbar" style="margin-bottom: 1.5rem;">
+            <a th:href="@{/property}" class="btn btn-secondary">← Voltar para Imóveis</a>
+        </div>
+
+        <div class="card" style="margin-bottom: 2rem; background-color: #eff6ff; border: 1px solid #bfdbfe;">
+            <div style="display: flex; justify-content: space-between; align-items: center;">
+                <div>
+                    <h3 style="color: #1e3a8a; margin-bottom: 0.5rem;" th:text="${property.logradouro + ', ' + property.numero}"></h3>
+                    <p style="color: #334155; margin: 0;">
+                        Proprietário: <strong th:text="${property.cliente.user.nome}"></strong> | 
+                        Categoria: <strong th:text="${property.categoria}"></strong>
+                    </p>
+                </div>
+            </div>
+        </div>
+
+        <div class="card" style="margin-bottom: 2rem;" th:if="${!billsList.isEmpty()}">
+            <h3 class="section-title">Evolução de Consumo (m&sup3;)</h3>
+            <div style="position: relative; height: 300px; width: 100%;">
+                <canvas id="consumoChart"></canvas>
+            </div>
+        </div>
+
+        <div class="card">
+            <h3 class="section-title">Extrato de Faturas</h3>
+            <table>
+                <thead>
+                    <tr>
+                        <th>Ref.</th>
+                        <th>Consumo</th>
+                        <th>Valor (R$)</th>
+                        <th>Vencimento</th>
+                        <th>Pagamento</th>
+                        <th>Status</th>
+                        <th>Ações</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr th:if="${billsList.isEmpty()}">
+                        <td colspan="7" class="empty-state">
+                            Nenhuma fatura registrada para este imóvel.
+                        </td>
+                    </tr>
+                    
+                    <tr th:each="bill : ${billsList}">
+                        <td><span class="badge badge-blue" th:text="${bill.mesReferencia}"></span></td>
+                        <td th:text="${bill.consumo} + ' m&sup3;'"></td>
+                        <td class="text-money">
+                            <strong th:text="'R$ ' + ${#numbers.formatDecimal(bill.valorTotal, 1, 'POINT', 2, 'COMMA')}"></strong>
+                        </td>
+                        <td th:text="${#temporals.format(bill.dataVencimento, 'dd/MM/yyyy')}"></td>
+                        <td th:text="${bill.dataPagamento != null ? #temporals.format(bill.dataPagamento, 'dd/MM/yyyy') : '-'}"></td>
+                        <td>
+                            <span th:class="'badge ' + 
+                                  (${bill.status.name() == 'PAGO' ? 'badge-success' : 
+                                   (bill.status.name() == 'PENDENTE' ? 'badge-warning' : 'badge-danger')})" 
+                                  th:text="${bill.status}">
+                            </span>
+                        </td>
+                        <td>
+                            <a th:href="@{/bill/edit/{id}(id=${bill.id})}" class="btn btn-secondary">Detalhes</a>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+    <script th:inline="javascript">
+        const labels = /*[[${mesesLabels}]]*/ [];
+        const dadosConsumo = /*[[${consumosData}]]*/ [];
+
+        if (labels.length > 0) {
+            const ctx = document.getElementById('consumoChart').getContext('2d');
+            
+            new Chart(ctx, {
+                type: 'line', 
+                data: {
+                    labels: labels,
+                    datasets: [{
+                        label: 'Consumo (m³)',
+                        data: dadosConsumo,
+                        borderColor: '#1d4ed8', 
+                        backgroundColor: 'rgba(29, 78, 216, 0.1)',
+                        borderWidth: 3,
+                        pointBackgroundColor: '#1e3a8a',
+                        pointRadius: 5,
+                        fill: true,
+                        tension: 0.3
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    scales: {
+                        y: {
+                            beginAtZero: true,
+                            title: {
+                                display: true,
+                                text: 'Volume em m³'
+                            }
+                        }
+                    },
+                    plugins: {
+                        legend: {
+                            display: false 
+                        }
+                    }
+                }
+            });
+        }
+    </script>
+</body>
+</html>

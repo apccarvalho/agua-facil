@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    <title>Faturas — ÁguaFácil</title>
+    <link rel="stylesheet" th:href="@{/styles.css}" />
+</head>
+<body>
+
+    <div th:replace="~{fragments/navbar :: navbar}"></div>
+
+    <div class="page-wrapper">
+        <div class="page-header">
+            <h1>Faturas</h1>
+            <p>Acompanhe e gerencie as contas de água dos imóveis cadastrados.</p>
+        </div>
+
+        <div th:if="${mensagemSucesso}" class="alert alert-success">
+            <span th:text="${mensagemSucesso}"></span>
+        </div>
+        <div th:if="${erro}" class="alert alert-danger">
+            <span th:text="${erro}"></span>
+        </div>
+
+        <div class="card">
+            <div class="toolbar">
+                <span class="toolbar-info" th:text="${billsList.size()} + ' fatura(s) gerada(s)'"></span>
+            </div>
+
+            <table>
+                <thead>
+                    <tr>
+                        <th># ID</th>
+                        <th>Imóvel (Matrícula)</th>
+                        <th>Endereço / Proprietário</th>
+                        <th>Ref.</th>
+                        <th>Consumo</th>
+                        <th>Valor Total</th>
+                        <th>Vencimento</th>
+                        <th>Pagamento</th>
+                        <th>Status</th>
+                        <th>Ações</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr th:if="${billsList.isEmpty()}">
+                        <td colspan="10" class="empty-state">
+                            Nenhuma fatura gerada no sistema ainda.
+                        </td>
+                    </tr>
+                    
+                    <tr th:each="bill : ${billsList}">
+                        <td th:text="${bill.id}"></td>
+                        
+                        <td>
+                            <span class="badge badge-blue" th:text="${bill.reading.property.matricula}"></span>
+                        </td>
+                        
+                        <td>
+                            <span th:text="${bill.reading.property.logradouro + ', ' + bill.reading.property.numero}"></span><br/>
+                            <small style="color: #64748b;" th:text="${bill.reading.property.cliente.user.nome}"></small>
+                        </td>
+                        
+                        <td>
+                            <span class="badge badge-blue" th:text="${bill.mesReferencia}"></span>
+                        </td>
+                        
+                        <td th:text="${bill.consumo} + ' m&sup3;'"></td>
+                        
+                        <td class="text-money">
+                            <strong th:text="'R$ ' + ${#numbers.formatDecimal(bill.valorTotal, 1, 'POINT', 2, 'COMMA')}"></strong>
+                        </td>
+                        
+                        <td th:text="${#temporals.format(bill.dataVencimento, 'dd/MM/yyyy')}"></td>
+                        
+                        <td th:text="${bill.dataPagamento != null ? #temporals.format(bill.dataPagamento, 'dd/MM/yyyy') : '-'}"></td>
+                        
+                        <td>
+                            <span th:class="'badge ' + 
+                                  (${bill.status.name() == 'PAGO' ? 'badge-success' : 
+                                   (bill.status.name() == 'PENDENTE' ? 'badge-warning' : 'badge-danger')})" 
+                                  th:text="${bill.status}">
+                            </span>
+                        </td>
+                        
+                        <td>
+                            <div class="action-buttons">
+                                <a th:href="@{/bill/edit/{id}(id=${bill.id})}"
+                                   class="btn btn-warning">Gerenciar</a>
+                                
+                                <form th:action="@{/bill/delete/{id}(id=${bill.id})}"
+                                      method="post" style="display:inline;">
+                                    <button type="submit" class="btn btn-danger"
+                                            onclick="return confirm('ATENÇÃO: Deseja realmente excluir esta fatura? Esta ação não pode ser desfeita.')">
+                                        Excluir
+                                    </button>
+                                </form>
+                            </div>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+</body>
+</html>
