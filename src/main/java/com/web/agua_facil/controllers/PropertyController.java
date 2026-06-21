@@ -13,6 +13,7 @@ import com.web.agua_facil.services.ClientService;
 import com.web.agua_facil.services.PropertyService;
 import jakarta.validation.Valid;
 import java.util.List;
+import java.util.Map;
 
 
 @Controller
@@ -100,4 +101,20 @@ public class PropertyController {
         model.addAttribute("clientes", clientes);
         model.addAttribute("categorias", PropertyCategory.values());
     }
+    
+    @GetMapping("/{id}/history")
+    public String showPropertyHistory(@PathVariable Long id, Model model, RedirectAttributes redirectAttributes) {
+        try {
+
+            Map<String, Object> dadosHistorico = propertyService.getPropertyHistoryData(id);
+            
+            model.addAllAttributes(dadosHistorico);
+
+            return "property/history";
+
+        } catch (IllegalArgumentException e) {
+            redirectAttributes.addFlashAttribute("erro", e.getMessage());
+            return "redirect:/property";
+        }
+    }    
 }

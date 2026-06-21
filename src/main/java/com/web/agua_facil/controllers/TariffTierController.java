@@ -5,9 +5,14 @@ import java.util.Optional;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
+import com.web.agua_facil.models.PropertyCategory;
 import com.web.agua_facil.models.TariffTier;
 import com.web.agua_facil.services.TariffTierService;
 
@@ -32,6 +37,7 @@ public class TariffTierController {
     @GetMapping("/create")
     public String create(Model model) {
         model.addAttribute("tariffTier", new TariffTier());
+        model.addAttribute("categorias", PropertyCategory.values());
         return "tariff/create";
     }
 
@@ -62,6 +68,7 @@ public class TariffTierController {
         
         if (tariffOpt.isPresent()) {
             model.addAttribute("tariffTier", tariffOpt.get());
+            model.addAttribute("categorias", PropertyCategory.values());
             return "tariff/edit";
         } else {
             redirectAttributes.addFlashAttribute("erro", "Faixa de tarifa não encontrada.");
@@ -76,6 +83,7 @@ public class TariffTierController {
                                    RedirectAttributes redirectAttributes) {
         
         if (result.hasErrors()) {
+        	model.addAttribute("categorias", PropertyCategory.values());
             return "tariff/edit";
         }
 
@@ -85,6 +93,7 @@ public class TariffTierController {
             return "redirect:/tariff";
         } catch (IllegalArgumentException e) {
             model.addAttribute("erroTarifa", e.getMessage());
+            model.addAttribute("categorias", PropertyCategory.values());
             return "tariff/edit";
         }
     }

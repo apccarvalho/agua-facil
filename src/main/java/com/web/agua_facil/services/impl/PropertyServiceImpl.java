@@ -3,20 +3,28 @@ package com.web.agua_facil.services.impl;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import com.web.agua_facil.models.Bill;
 import com.web.agua_facil.models.Property;
+import com.web.agua_facil.repositories.BillRepository;
 import com.web.agua_facil.repositories.PropertyRepository;
 import com.web.agua_facil.services.PropertyService;
 
+import java.util.Comparator;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 @Service
 public class PropertyServiceImpl implements PropertyService {
 
     private final PropertyRepository propertyRepository;
+    private final BillRepository billRepository;
 
-    public PropertyServiceImpl(PropertyRepository propertyRepository) {
+    public PropertyServiceImpl(PropertyRepository propertyRepository, BillRepository billRepository) {
         this.propertyRepository = propertyRepository;
+        this.billRepository = billRepository;
     }
 
     @Override
@@ -81,4 +89,26 @@ public class PropertyServiceImpl implements PropertyService {
         }
         propertyRepository.deleteById(id);
     }
+    
+    @Override
+    public Map<String, Object> getPropertyHistoryData(Long propertyId) {
+
+        Property property = propertyRepository.findById(propertyId)
+            .orElseThrow(() -> new IllegalArgumentException("Imóvel não encontrado."));
+
+        List<Bill> bills = billRepository.findBillsByPropertyId(propertyId);
+        bills.sort(Comparator.comparing(Bill::getDataVencimento));
+
+        List<String> mesesLabels = bills.stream().map(Bill::getMesReferencia).collect(Collectors.toList());
+        List<Long> consumosData = bills.stream().map(Bill::getConsumo).collect(Collectors.toList());
+
+        Map<String, Object> dados = new HashMap<>();
+        dados.put("property", property);
+        dados.put("billsList", bills);
+        dados.put("mesesLabels", mesesLabels);
+        dados.put("consumosData", consumosData);
+
+        return dados;
+    }
+    
 }

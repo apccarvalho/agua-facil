@@ -402,3 +402,8 @@ tbody td {
     margin-bottom: 1.5rem;
     min-height: 40px; 
 }
+
+/* Classes semânticas usadas na tela de Faturas */
+.badge-success { background: #dcfce7; color: #15803d; } /* Equivalente ao seu badge-green */
+.badge-warning { background: #fef9c3; color: #92400e; } /* Equivalente ao seu badge-yellow */
+.badge-danger  { background: #fee2e2; color: #b91c1c; } /* Equivalente ao seu badge-red */

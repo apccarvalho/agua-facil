@@ -68,6 +68,14 @@
                         
                         <td>
                             <div class="action-buttons">
+                                
+                                <form th:action="@{/bill/generate/{readingId}(readingId=${reading.id})}"
+                                      method="post" style="display:inline;">
+                                    <button type="submit" class="btn btn-primary" title="Calcular e Gerar Fatura">
+                                        Faturar
+                                    </button>
+                                </form>
+
                                 <a th:href="@{/reading/edit/{id}(id=${reading.id})}"
                                    class="btn btn-warning">Editar</a>
                                 
@@ -78,6 +86,7 @@
                                         Excluir
                                     </button>
                                 </form>
+                                
                             </div>
                         </td>
                     </tr>

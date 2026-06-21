@@ -1,8 +1,10 @@
 package com.web.agua_facil.models;
 
-import java.math.BigDecimal; // Import necessário para valores monetários
+import java.math.BigDecimal;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
+import jakarta.persistence.EnumType;
+import jakarta.persistence.Enumerated;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
@@ -41,4 +43,9 @@ public class TariffTier {
     @NotNull(message = "Valor é um campo obrigatório")
     @Column(name = "valor_por_m3", nullable = false, precision = 10, scale = 2) 
     private BigDecimal valorPorM3;
+    
+    @NotNull(message = "A categoria do imóvel é obrigatória")
+    @Enumerated(EnumType.STRING)
+    @Column(name = "categoria", nullable = false)
+    private PropertyCategory categoria;
 }

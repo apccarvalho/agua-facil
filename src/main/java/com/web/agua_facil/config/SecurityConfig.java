@@ -31,7 +31,7 @@ public class SecurityConfig {
                 //.anyRequest().permitAll()
             	
                 .requestMatchers("/login", "/css/**", "/js/**", "/images/**", "/styles.css").permitAll()
-                .requestMatchers("/user/**", "/client/**").hasRole("FUNCIONARIO")
+                .requestMatchers("/user/**", "/client/**", "/property/**").hasRole("FUNCIONARIO")
                 .requestMatchers("/leitor/**").hasRole("LEITOR")
                 .requestMatchers("/perfil/").hasAnyRole("FUNCIONARIO", "CLIENTE")
                 .requestMatchers("/", "/index").authenticated()

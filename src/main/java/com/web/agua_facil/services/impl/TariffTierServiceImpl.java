@@ -7,6 +7,7 @@ import java.util.Optional;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import com.web.agua_facil.models.PropertyCategory;
 import com.web.agua_facil.models.TariffTier;
 import com.web.agua_facil.repositories.TariffTierRepository;
 import com.web.agua_facil.services.TariffTierService;
@@ -49,12 +50,12 @@ public class TariffTierServiceImpl implements TariffTierService {
     }
     
     @Override
-    public Optional<TariffTier> findTariffTierByConsumo(Long consumo) {
+    public Optional<TariffTier> findTariffTierByConsumoAndCategoria(Long consumo, PropertyCategory categoria) {
         if (consumo < 0) {
             throw new IllegalArgumentException("Erro: O consumo medido não pode ser negativo.");
         }
         
-        return tariffTierRepository.findTierByConsumo(consumo);
+        return tariffTierRepository.findTierByConsumoAndCategoria(consumo, categoria);
     }
     
     @Override
@@ -77,7 +78,8 @@ public class TariffTierServiceImpl implements TariffTierService {
         existingTier.setDescricao(tariffTierDetails.getDescricao());
         existingTier.setConsumoMinimo(tariffTierDetails.getConsumoMinimo());
         existingTier.setConsumoMaximo(tariffTierDetails.getConsumoMaximo());
-        existingTier.setValorPorM3(tariffTierDetails.getValorPorM3());
+        existingTier.setValorPorM3(tariffTierDetails.getValorPorM3());      
+        existingTier.setCategoria(tariffTierDetails.getCategoria());
 
         return tariffTierRepository.save(existingTier);
     }

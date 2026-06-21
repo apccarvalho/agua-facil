@@ -18,7 +18,7 @@
 
         <div class="card">
             <div class="toolbar">
-                <!-- Usando a nova classe toolbar-info -->
+                
                 <span class="toolbar-info" th:text="${usersList.size()} + ' usuário(s) cadastrado(s)'"></span>
                 
                 <a th:href="@{/user/novo}" class="btn btn-primary">
@@ -38,7 +38,7 @@
                 </thead>
                 <tbody>
                     <tr th:if="${usersList.isEmpty()}">
-                        <!-- Usando a classe empty-state já existente no CSS -->
+                        
                         <td colspan="5" class="empty-state">
                             Nenhum usuário cadastrado.
                         </td>
@@ -53,7 +53,7 @@
                             <span th:if="${user.role.name() == 'LEITOR'}"  class="badge badge-yellow">Leitor</span>
                         </td>
                         <td>
-                            <!-- Container flexível para os botões -->
+                            
                             <div class="action-buttons">
                                 <a th:href="@{/user/edit/{id}(id=${user.id})}"
                                    class="btn btn-warning">Editar</a>

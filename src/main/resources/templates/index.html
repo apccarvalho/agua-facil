@@ -9,7 +9,6 @@
     <link rel="stylesheet" th:href="@{/styles.css}" />
 </head>
 <body>
->
     <div th:replace="~{fragments/navbar :: navbar}"></div>
 
     <div class="page-wrapper">
@@ -34,27 +33,34 @@
                 <p>Controle os perfis e acessos dos funcionários.</p>
                 <a th:href="@{/user}" class="btn btn-primary" style="width: 100%; justify-content: center;">Usuários</a>
             </div>
+            
+            <div class="dashboard-card" sec:authorize="hasAnyRole('CLIENTE', 'FUNCIONARIO')">
+			    <div class="dashboard-icon">🏠</div>
+			    <h3>Meus Imóveis</h3>
+			    <p>Consulte e gerencie os dados dos seus imóveis cadastrados.</p>
+			    <a th:href="@{/property}" class="btn btn-primary" style="width: 100%; justify-content: center;">Ver Imóveis</a>
+			</div>
 
             <div class="dashboard-card" sec:authorize="hasAnyRole('LEITOR', 'FUNCIONARIO')">
                 <div class="dashboard-icon">📝</div>
                 <h3>Lançamento de Leituras</h3>
                 <p>Registre os consumos de água dos hidrômetros.</p>
-                <a th:href="@{/leitor/leituras}" class="btn btn-primary" style="width: 100%; justify-content: center;">Registrar Leitura</a>
+                <a th:href="@{/reading}" class="btn btn-primary" style="width: 100%; justify-content: center;">Registrar Leitura</a>
             </div>
 
             <div class="dashboard-card" sec:authorize="hasAnyRole('CLIENTE', 'FUNCIONARIO')">
                 <div class="dashboard-icon">📄</div>
-                <h3>Minhas Faturas</h3>
-                <p>Consulte os seus débitos e emita a 2ª via de faturas.</p>
-                <a th:href="@{/cliente/faturas}" class="btn btn-primary" style="width: 100%; justify-content: center;">Ver Faturas</a>
+                <h3>Faturas</h3>
+                <p>Consulte de débitos.</p>
+                <a th:href="@{/bill}" class="btn btn-primary" style="width: 100%; justify-content: center;">Ver Faturas</a>
             </div>
-
-            <div class="dashboard-card" sec:authorize="hasAnyRole('CLIENTE', 'FUNCIONARIO')">
-                <div class="dashboard-icon">📊</div>
-                <h3>Meu Histórico</h3>
-                <p>Acompanhe a evolução do seu consumo de água.</p>
-                <a th:href="@{/cliente/historico}" class="btn btn-primary" style="width: 100%; justify-content: center;">Ver Histórico</a>
-            </div>
+            
+            <div class="dashboard-card" sec:authorize="hasRole('FUNCIONARIO')">
+			    <div class="dashboard-icon">💰</div>
+			    <h3>Faixas de Tarifa</h3>
+			    <p>Gerencie a estrutura de cobrança, intervalos e valores por m&sup3;.</p>
+			    <a th:href="@{/tariff}" class="btn btn-primary" style="width: 100%; justify-content: center;">Tarifas</a>
+			</div>
 
         </div>
     </div>
