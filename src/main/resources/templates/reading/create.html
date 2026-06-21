@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    <title>Registrar Leitura — ÁguaFácil</title>
+    <link rel="stylesheet" th:href="@{/styles.css}" />
+</head>
+<body>
+
+    <div th:replace="~{fragments/navbar :: navbar}"></div>
+
+    <div class="page-wrapper">
+        <div class="page-header">
+            <h1>Registrar Leitura</h1>
+            <p>Insira os dados da nova medição do hidrômetro.</p>
+        </div>
+
+        <div class="card card-form">
+            <form th:action="@{/reading/save}" th:object="${reading}" method="post">
+                
+                <h3 class="form-section-title">Dados da Medição</h3>
+                
+                <div class="form-group">
+                    <label for="property">Imóvel (Matrícula — Proprietário)</label>
+                    <select id="property" th:field="*{property}" class="form-control" required>
+                        <option value="">Selecione um imóvel...</option>
+                        <option th:each="p : ${properties}" 
+                                th:value="${p.id}" 
+                                th:text="${p.matricula + ' — ' + p.cliente.user.nome + ' (' + p.logradouro + ')'}">
+                        </option>
+                    </select>
+                    <div class="error-msg" th:if="${#fields.hasErrors('property')}" th:errors="*{property}"></div>
+                </div>
+
+                <div class="form-row">
+                    <div class="form-group">
+                        <label for="dataLeitura">Data da Leitura</label>
+                        <input type="date" id="dataLeitura" th:field="*{dataLeitura}" class="form-control" required />
+                        <div class="error-msg" th:if="${#fields.hasErrors('dataLeitura')}" th:errors="*{dataLeitura}"></div>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="valorMedido">Valor Medido (m&sup3;)</label>
+                        <input type="number" id="valorMedido" th:field="*{valorMedido}" class="form-control" placeholder="Ex: 1520" min="0" required />
+                        
+                        <div class="error-msg" th:if="${#fields.hasErrors('valorMedido')}" th:errors="*{valorMedido}"></div>
+                        
+                        <div class="error-msg" th:if="${erroLeitura}" th:text="${erroLeitura}"></div>
+                    </div>
+                </div>
+
+                <div class="form-actions">
+                    <a th:href="@{/reading}" class="btn btn-secondary">Cancelar</a>
+                    <button type="submit" class="btn btn-primary">Salvar Leitura</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+</body>
+</html>

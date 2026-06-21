@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    <title>Leituras — ÁguaFácil</title>
+    <link rel="stylesheet" th:href="@{/styles.css}" />
+</head>
+<body>
+
+    <div th:replace="~{fragments/navbar :: navbar}"></div>
+
+    <div class="page-wrapper">
+        <div class="page-header">
+            <h1>Leituras de Hidrômetros</h1>
+            <p>Acompanhe e gerencie o histórico de medições dos imóveis cadastrados.</p>
+        </div>
+
+        <div th:if="${mensagemSucesso}" class="alert alert-success">
+            <span th:text="${mensagemSucesso}"></span>
+        </div>
+        <div th:if="${erro}" class="alert alert-danger">
+            <span th:text="${erro}"></span>
+        </div>
+
+        <div class="card">
+            <div class="toolbar">
+                <span class="toolbar-info" th:text="${readingsList.size()} + ' leitura(s) registrada(s)'"></span>
+                <a th:href="@{/reading/create}" class="btn btn-primary">
+                    + Nova Leitura
+                </a>
+            </div>
+
+            <table>
+                <thead>
+                    <tr>
+                        <th># ID</th>
+                        <th>Imóvel (Matrícula)</th>
+                        <th>Endereço / Proprietário</th>
+                        <th>Data da Leitura</th>
+                        <th>Valor Medido</th>
+                        <th>Ações</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr th:if="${readingsList.isEmpty()}">
+                        <td colspan="6" class="empty-state">
+                            Nenhuma leitura registrada no sistema.
+                        </td>
+                    </tr>
+                    <tr th:each="reading : ${readingsList}">
+                        <td th:text="${reading.id}"></td>
+                        
+                        <td>
+                            <span class="badge badge-blue" th:text="${reading.property.matricula}"></span>
+                        </td>
+                        
+                        <td>
+                            <span th:text="${reading.property.logradouro + ', ' + reading.property.numero}"></span><br/>
+                            <small style="color: #64748b;" th:text="${reading.property.cliente.user.nome}"></small>
+                        </td>
+                        
+                        <td th:text="${#temporals.format(reading.dataLeitura, 'dd/MM/yyyy')}"></td>
+                        
+                        <td>
+                            <strong th:text="${reading.valorMedido} + ' m&sup3;'"></strong>
+                        </td>
+                        
+                        <td>
+                            <div class="action-buttons">
+                                <a th:href="@{/reading/edit/{id}(id=${reading.id})}"
+                                   class="btn btn-warning">Editar</a>
+                                
+                                <form th:action="@{/reading/delete/{id}(id=${reading.id})}"
+                                      method="post" style="display:inline;">
+                                    <button type="submit" class="btn btn-danger"
+                                            onclick="return confirm('ATENÇÃO: Deseja realmente excluir esta leitura?')">
+                                        Excluir
+                                    </button>
+                                </form>
+                            </div>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+</body>
+</html>

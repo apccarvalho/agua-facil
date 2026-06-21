@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    <title>Editar Leitura — ÁguaFácil</title>
+    <link rel="stylesheet" th:href="@{/styles.css}" />
+</head>
+<body>
+
+    <div th:replace="~{fragments/navbar :: navbar}"></div>
+
+    <div class="page-wrapper">
+        <div class="page-header">
+            <h1>Editar Leitura</h1>
+            <p>Ajuste o valor medido. O imóvel e a data não podem ser alterados por segurança de faturamento.</p>
+        </div>
+
+        <div class="card card-form">
+            <form th:action="@{/reading/edit/{id}(id=${reading.id})}" th:object="${reading}" method="post">
+                
+                <input type="hidden" th:field="*{id}" />
+
+                <input type="hidden" th:field="*{property.id}" />
+                <input type="hidden" th:field="*{dataLeitura}" />
+                
+                <h3 class="form-section-title">Dados da Medição</h3>
+                
+                <div class="form-group">
+                    <label>Imóvel (Matrícula — Proprietário)</label>
+                    <input type="text" 
+                           class="form-control" 
+                           readonly 
+                           th:value="${reading.property.matricula + ' — ' + reading.property.cliente.user.nome + ' (' + reading.property.logradouro + ')'}" />
+                    <span class="label-hint">Campo bloqueado</span>
+                </div>
+
+                <div class="form-row">
+                    <div class="form-group">
+                        <label>Data da Leitura</label>
+                        <input type="date" 
+                               class="form-control" 
+                               readonly 
+                               th:value="*{dataLeitura}" />
+                    </div>
+
+                    <div class="form-group">
+                        <label for="valorMedido">Valor Medido (m&sup3;)</label>
+                        <input type="number" id="valorMedido" th:field="*{valorMedido}" class="form-control" min="0" required />
+                        
+                        <div class="error-msg" th:if="${#fields.hasErrors('valorMedido')}" th:errors="*{valorMedido}"></div>
+                        
+                        <div class="error-msg" th:if="${erroLeitura}" th:text="${erroLeitura}"></div>
+                    </div>
+                </div>
+
+                <div class="form-actions">
+                    <a th:href="@{/reading}" class="btn btn-secondary">Cancelar</a>
+                    <button type="submit" class="btn btn-primary">Salvar Alterações</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+</body>
+</html>
