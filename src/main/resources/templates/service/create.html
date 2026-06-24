@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    <title>Novo Serviço — ÁguaFácil</title>
+    <link rel="stylesheet" th:href="@{/styles.css}" />
+</head>
+<body>
+
+    <div th:replace="~{fragments/navbar :: navbar}"></div>
+
+    <div class="page-wrapper">
+        <div class="page-header">
+            <h1>Cadastrar Novo Serviço</h1>
+            <p>Insira as informações do novo tipo de taxa ou serviço que poderá ser lançado no sistema.</p>
+        </div>
+
+        <div class="card card-form">
+            <form th:action="@{/service/create}" th:object="${service}" method="post">
+                
+                <h3 class="form-section-title">Dados do Serviço</h3>
+
+                <div class="form-group">
+                    <label for="nome">Nome do Serviço</label>
+                    <input type="text" id="nome" th:field="*{nome}" 
+                           th:class="'form-control' + (${#fields.hasErrors('nome')} ? ' is-invalid' : '')" 
+                           placeholder="Ex: Taxa de Religação, Vistoria Técnica" required />
+                    <div class="error-msg" th:if="${#fields.hasErrors('nome')}" th:errors="*{nome}"></div>
+                </div>
+
+                <div class="form-group">
+                    <label for="descricao">Descrição / Observações</label>
+                    <textarea id="descricao" th:field="*{descricao}" class="form-control" rows="3" 
+                              placeholder="Descreva brevemente em quais condições este serviço é cobrado..."></textarea>
+                </div>
+
+                <div class="form-group">
+                    <label for="valor">Valor do Serviço (R$)</label>
+                    <input type="number" step="0.01" min="0.00" id="valor" th:field="*{valor}" 
+                           th:class="'form-control' + (${#fields.hasErrors('valor')} ? ' is-invalid' : '')" 
+                           placeholder="0,00" required />
+                    <span class="label-hint">Use ponto para separar os centavos (Ex: 50.00)</span>
+                    <div class="error-msg" th:if="${#fields.hasErrors('valor')}" th:errors="*{valor}"></div>
+                </div>
+
+                <div class="form-actions">
+                    <a th:href="@{/service}" class="btn btn-secondary">Cancelar</a>
+                    <button type="submit" class="btn btn-primary">Salvar Serviço</button>
+                </div>
+
+            </form>
+        </div>
+    </div>
+
+</body>
+</html>

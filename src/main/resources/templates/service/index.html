@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    <title>Serviços e Taxas — ÁguaFácil</title>
+    <link rel="stylesheet" th:href="@{/styles.css}" />
+</head>
+<body>
+
+    <div th:replace="~{fragments/navbar :: navbar}"></div>
+
+    <div class="page-wrapper">
+        <div class="page-header">
+            <h1>Serviços e Taxas</h1>
+            <p>Gerencie o catálogo de serviços adicionais, como religações, manutenções e vistorias.</p>
+        </div>
+
+        <div th:if="${mensagemSucesso}" class="alert alert-success">
+            <span th:text="${mensagemSucesso}"></span>
+        </div>
+        <div th:if="${erro}" class="alert alert-danger">
+            <span th:text="${erro}"></span>
+        </div>
+
+        <div class="card">
+            <div class="toolbar">
+                <span class="toolbar-info" th:text="${servicesList.size()} + ' serviço(s) cadastrado(s)'"></span>
+                <a th:href="@{/service/create}" class="btn btn-primary">
+                    + Novo Serviço
+                </a>
+            </div>
+
+            <table>
+                <thead>
+                    <tr>
+                        <th># ID</th>
+                        <th>Nome do Serviço</th>
+                        <th>Descrição</th>
+                        <th>Valor (R$)</th>
+                        <th>Ações</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr th:if="${servicesList.isEmpty()}">
+                        <td colspan="5" class="empty-state">
+                            Nenhum serviço ou taxa cadastrado no sistema.
+                        </td>
+                    </tr>
+                    
+                    <tr th:each="service : ${servicesList}">
+                        <td th:text="${service.id}"></td>
+                        
+                        <td>
+                            <strong style="color: #1e3a8a;" th:text="${service.nome}"></strong>
+                        </td>
+                        
+                        <td th:text="${service.descricao}"></td>
+                        
+                        <td class="text-money">
+                            <strong th:text="'R$ ' + ${#numbers.formatDecimal(service.valor, 1, 'POINT', 2, 'COMMA')}"></strong>
+                        </td>
+                        
+                        <td>
+                            <div class="action-buttons">
+                                <a th:href="@{/service/edit/{id}(id=${service.id})}"
+                                   class="btn btn-warning">Editar</a>
+                                
+                                <form th:action="@{/service/delete/{id}(id=${service.id})}"
+                                      method="post" style="display:inline;">
+                                    <button type="submit" class="btn btn-danger"
+                                            onclick="return confirm('ATENÇÃO: Deseja realmente excluir este serviço? Esta ação não pode ser desfeita.')">
+                                        Excluir
+                                    </button>
+                                </form>
+                            </div>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+</body>
+</html>

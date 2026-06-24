@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    <title>Pré-Faturamento — ÁguaFácil</title>
+    <link rel="stylesheet" th:href="@{/styles.css}" />
+</head>
+<body>
+
+    <div th:replace="~{fragments/navbar :: navbar}"></div>
+
+    <div class="page-wrapper">
+        <div class="page-header">
+            <h1>Adicionar Taxas Extras</h1>
+            <p>Selecione se há algum serviço adicional a ser cobrado nesta fatura específica.</p>
+        </div>
+
+        <div class="card card-form">
+            <form th:action="@{/bill/generate/{readingId}(readingId=${readingId})}" method="post">
+                
+                <h3 class="form-section-title">Serviços Disponíveis</h3>
+
+                <div th:if="${servicesList.isEmpty()}" class="alert alert-warning" style="background: #fffbeb; color: #b45309; border-left: 4px solid #f59e0b;">
+                    Nenhum serviço ou taxa cadastrado no sistema no momento. A fatura será gerada apenas com o consumo de água e esgoto.
+                </div>
+
+                <div class="service-list" th:if="${!servicesList.isEmpty()}">
+                    <label class="service-item" th:each="service : ${servicesList}">
+                        <input type="checkbox" name="servicosIds" th:value="${service.id}" />
+                        
+                        <div class="service-info">
+                            <div>
+                                <strong th:text="${service.nome}"></strong>
+                                <div style="font-size: 0.8rem; color: #64748b;" th:text="${service.descricao}"></div>
+                            </div>
+                            <div class="service-price" th:text="'+ R$ ' + ${#numbers.formatDecimal(service.valor, 1, 'POINT', 2, 'COMMA')}"></div>
+                        </div>
+                    </label>
+                </div>
+
+                <div class="form-actions" style="margin-top: 2rem;">
+                    <a th:href="@{/reading}" class="btn btn-secondary">Cancelar</a>
+                    <button type="submit" class="btn btn-primary">Gerar Fatura Agora</button>
+                </div>
+
+            </form>
+        </div>
+    </div>
+
+</body>
+</html>
