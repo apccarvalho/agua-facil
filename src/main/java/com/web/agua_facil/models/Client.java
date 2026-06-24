@@ -1,11 +1,15 @@
 package com.web.agua_facil.models;
 
+import java.util.List;
+
+import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
+import jakarta.persistence.OneToMany;
 import jakarta.persistence.OneToOne;
 import jakarta.persistence.Table;
 import jakarta.validation.Valid;
@@ -29,8 +33,8 @@ public class Client {
     private Long id;
 
     @Valid
-    @OneToOne
     @JoinColumn(name = "user_id", nullable = false)
+    @OneToOne(cascade = CascadeType.ALL, orphanRemoval = true)
     private User user;
 
     @NotBlank(message = "CPF é um campo obrigatório")
@@ -53,5 +57,8 @@ public class Client {
     @NotBlank(message = "Telefone é um campo obrigatório")
     @Column(name = "telefone", nullable = false)
     private String telefone;
+    
+    @OneToMany(mappedBy = "cliente", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<Property> propriedades;
 
 }

@@ -34,4 +34,7 @@ public class Reading {
     @Column(name = "valor_medido", nullable = false)
     private Long valorMedido;
     
+    @OneToOne(mappedBy = "reading", cascade = CascadeType.ALL, orphanRemoval = true)
+    private Bill bill;
+    
 }
