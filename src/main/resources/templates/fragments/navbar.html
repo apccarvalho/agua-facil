@@ -31,6 +31,10 @@
             <li sec:authorize="hasRole('FUNCIONARIO')">
                 <a th:href="@{/tariff}">Tarifas</a>
             </li>
+            
+            <li sec:authorize="hasRole('FUNCIONARIO')">
+                <a th:href="@{/service}">Serviços</a>
+            </li>
         </ul>
 
         <div class="navbar-user">

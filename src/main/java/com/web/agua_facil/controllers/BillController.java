@@ -1,5 +1,6 @@
 package com.web.agua_facil.controllers;
 
+import java.util.List;
 import java.util.Optional;
 
 import org.springframework.stereotype.Controller;
@@ -11,6 +12,7 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import com.web.agua_facil.models.Bill;
 import com.web.agua_facil.models.BillStatus;
 import com.web.agua_facil.services.BillService;
+import com.web.agua_facil.services.ServiceService;
 
 import jakarta.validation.Valid;
 
@@ -19,9 +21,11 @@ import jakarta.validation.Valid;
 public class BillController {
 
     private final BillService billService;
+    private final ServiceService serviceService;
 
-    public BillController(BillService billService) {
+    public BillController(BillService billService, ServiceService serviceService) {
         this.billService = billService;
+        this.serviceService = serviceService;
     }
 
     @GetMapping
@@ -30,10 +34,22 @@ public class BillController {
         return "bill/index";
     }
 
+    @GetMapping("/generate/{readingId}")
+    public String showPreGenerateForm(@PathVariable Long readingId, Model model) {
+        model.addAttribute("readingId", readingId);
+        model.addAttribute("servicesList", serviceService.getAllServices()); 
+        
+        return "bill/pre-generate";
+    }
+    
     @PostMapping("/generate/{readingId}")
-    public String generateBill(@PathVariable Long readingId, RedirectAttributes redirectAttributes) {
+    public String generateBill(
+            @PathVariable Long readingId, 
+            @RequestParam(value = "servicosIds", required = false) List<Long> servicosIds,
+            RedirectAttributes redirectAttributes) {
+        
         try {
-            billService.gerarFatura(readingId);
+            billService.gerarFatura(readingId, servicosIds);
             redirectAttributes.addFlashAttribute("mensagemSucesso", "Fatura gerada com sucesso!");
         } catch (IllegalArgumentException e) {
             redirectAttributes.addFlashAttribute("erro", e.getMessage());

@@ -4,6 +4,7 @@ import java.math.BigDecimal;
 import java.util.List;
 import java.util.Optional;
 
+import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -88,11 +89,16 @@ public class TariffTierServiceImpl implements TariffTierService {
     @Transactional
     public void deleteTariffTier(Long id) {
         
-        if (!tariffTierRepository.existsById(id)) {
-            throw new IllegalArgumentException("Erro: Não é possível excluir. Faixa de tarifa com ID " + id + " não encontrada.");
-        }
+        TariffTier existingTier = tariffTierRepository.findById(id)
+            .orElseThrow(() -> new IllegalArgumentException("Erro: Não é possível excluir. Faixa de tarifa com ID " + id + " não encontrada."));
 
-        tariffTierRepository.deleteById(id);
+        try {
+            tariffTierRepository.delete(existingTier);
+            tariffTierRepository.flush(); 
+            
+        } catch (DataIntegrityViolationException e) {
+            throw new IllegalArgumentException("Ação bloqueada: Não é possível excluir esta tarifa, pois ela já está vinculada a faturas ou cálculos no histórico do sistema.");
+        }
     }
     
 }

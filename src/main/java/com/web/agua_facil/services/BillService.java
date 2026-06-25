@@ -11,5 +11,5 @@ public interface BillService {
     List<Bill> findBillsByPropertyId(Long propertyId);
     Bill updateBill(Long id, Bill billDetails);
     void deleteBill(Long id);
-    Bill gerarFatura(Long readingId);
+    Bill gerarFatura(Long readingId, List<Long> servicosIds);
 }

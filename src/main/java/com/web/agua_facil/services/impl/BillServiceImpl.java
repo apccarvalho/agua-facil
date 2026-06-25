@@ -15,6 +15,7 @@ import com.web.agua_facil.models.Reading;
 import com.web.agua_facil.models.TariffTier;
 import com.web.agua_facil.repositories.BillRepository;
 import com.web.agua_facil.repositories.ReadingRepository;
+import com.web.agua_facil.repositories.ServiceRepository;
 import com.web.agua_facil.services.BillService;
 import com.web.agua_facil.services.TariffTierService;
 
@@ -24,11 +25,13 @@ public class BillServiceImpl implements BillService {
     private final BillRepository billRepository;
     private final ReadingRepository readingRepository;
     private final TariffTierService tariffTierService;
+    private final ServiceRepository serviceRepository;
 
-    public BillServiceImpl(BillRepository billRepository, ReadingRepository readingRepository,TariffTierService tariffTierService) {
+    public BillServiceImpl(BillRepository billRepository, ReadingRepository readingRepository,TariffTierService tariffTierService, ServiceRepository serviceRepository) {
 			this.billRepository = billRepository;
 			this.readingRepository = readingRepository;
 			this.tariffTierService = tariffTierService;
+			this.serviceRepository = serviceRepository;
 	}
 
     @Override
@@ -95,7 +98,7 @@ public class BillServiceImpl implements BillService {
     
     @Override
     @Transactional
-    public Bill gerarFatura(Long readingId) {
+    public Bill gerarFatura(Long readingId, List<Long> servicosIds) {
         
         Reading leituraAtual = readingRepository.findById(readingId)
             .orElseThrow(() -> new IllegalArgumentException("Erro: Leitura com ID " + readingId + " não encontrada."));
@@ -123,9 +126,23 @@ public class BillServiceImpl implements BillService {
 
         BigDecimal valorAgua = faixaTarifa.getValorPorM3().multiply(BigDecimal.valueOf(consumo));
         BigDecimal taxaEsgoto = valorAgua.multiply(new BigDecimal("0.50"));
-        BigDecimal valorTotal = valorAgua.add(taxaEsgoto);
+        BigDecimal valorServicosExtras = BigDecimal.ZERO;
 
         Bill novaFatura = new Bill();
+
+        if (servicosIds != null && !servicosIds.isEmpty()) {
+
+            List<com.web.agua_facil.models.Service> servicos = serviceRepository.findAllById(servicosIds);
+            
+            novaFatura.setServicos(servicos); 
+            
+            for (com.web.agua_facil.models.Service s : servicos) {
+                valorServicosExtras = valorServicosExtras.add(s.getValor());
+            }
+        }
+
+        BigDecimal valorTotal = valorAgua.add(taxaEsgoto).add(valorServicosExtras);
+
         novaFatura.setReading(leituraAtual);
         novaFatura.setConsumo(consumo);
         novaFatura.setValorTotal(valorTotal);

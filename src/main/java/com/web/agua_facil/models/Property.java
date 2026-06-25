@@ -65,4 +65,5 @@ public class Property {
     
     @OneToMany(mappedBy = "property", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<Reading> leituras;
+    
 }

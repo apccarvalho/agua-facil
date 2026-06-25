@@ -69,12 +69,9 @@
                         <td>
                             <div class="action-buttons">
                                 
-                                <form th:action="@{/bill/generate/{readingId}(readingId=${reading.id})}"
-                                      method="post" style="display:inline;">
-                                    <button type="submit" class="btn btn-primary" title="Calcular e Gerar Fatura">
-                                        Faturar
-                                    </button>
-                                </form>
+						<a th:href="@{/bill/generate/{readingId}(readingId=${reading.id})}" class="btn btn-primary" title="Adicionar taxas e gerar fatura">
+						    Faturar
+						</a>
 
                                 <a th:href="@{/reading/edit/{id}(id=${reading.id})}"
                                    class="btn btn-warning">Editar</a>

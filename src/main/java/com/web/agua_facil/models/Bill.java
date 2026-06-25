@@ -2,6 +2,8 @@ package com.web.agua_facil.models;
 
 import java.math.BigDecimal;
 import java.time.LocalDate;
+import java.util.List;
+
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.EnumType;
@@ -11,6 +13,8 @@ import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
+import jakarta.persistence.JoinTable;
+import jakarta.persistence.ManyToMany;
 import jakarta.persistence.OneToOne;
 import jakarta.persistence.Table;
 import jakarta.validation.constraints.NotBlank;
@@ -60,4 +64,12 @@ public class Bill {
     @Enumerated(EnumType.STRING)
     @Column(name = "status", nullable = false)
     private BillStatus status;
+    
+    @ManyToMany
+    @JoinTable(
+        name = "bill_services",
+        joinColumns = @JoinColumn(name = "bill_id"),
+        inverseJoinColumns = @JoinColumn(name = "service_id")
+    )
+    private List<com.web.agua_facil.models.Service> servicos;
 }

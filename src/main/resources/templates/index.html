@@ -61,6 +61,13 @@
 			    <p>Gerencie a estrutura de cobrança, intervalos e valores por m&sup3;.</p>
 			    <a th:href="@{/tariff}" class="btn btn-primary" style="width: 100%; justify-content: center;">Tarifas</a>
 			</div>
+			
+			<div class="dashboard-card" sec:authorize="hasRole('FUNCIONARIO')">
+			    <div class="dashboard-icon">🛠️</div>
+			    <h3>Serviços e Taxas</h3>
+			    <p>Gerencie o catálogo de serviços adicionais, como religações, manutenções e vistorias.</p>
+			    <a th:href="@{/service}" class="btn btn-primary" style="width: 100%; justify-content: center;">Serviços</a>
+			</div>
 
         </div>
     </div>
