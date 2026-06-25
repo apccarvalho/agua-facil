@@ -21,6 +21,10 @@ public interface BillRepository extends JpaRepository<Bill, Long> {
     @Query("SELECT b FROM Bill b WHERE b.reading.property.id = :propertyId")
     List<Bill> findBillsByPropertyId(@Param("propertyId") Long propertyId);
 
+    //Busca uma fatura pelo mês de referência, para que não fature duas vezes
     @Query("SELECT b FROM Bill b WHERE b.reading.property.id = :propertyId AND b.mesReferencia = :mesReferencia")
     Optional<Bill> findByPropertyIdAndMesReferencia(@Param("propertyId") Long propertyId, @Param("mesReferencia") String mesReferencia);
+    
+    //Lista apenas as últimas 05 faturas
+    List<Bill> findTop5ByReadingPropertyClienteIdOrderByDataVencimentoDesc(Long clienteId);
 }

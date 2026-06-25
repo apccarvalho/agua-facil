@@ -156,4 +156,9 @@ public class BillServiceImpl implements BillService {
 
         return this.saveBill(novaFatura);
     }
+    
+    @Override
+    public List<Bill> getTop5FaturasRecentesDoCliente(Long clienteId) {
+        return billRepository.findTop5ByReadingPropertyClienteIdOrderByDataVencimentoDesc(clienteId);
+    }
 }

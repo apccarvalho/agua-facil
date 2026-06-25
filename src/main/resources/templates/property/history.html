@@ -17,8 +17,10 @@
             <p>Análise de consumo e controle financeiro da matrícula <strong th:text="${property.matricula}"></strong>.</p>
         </div>
 
-        <div class="toolbar" style="margin-bottom: 1.5rem;">
-            <a th:href="@{/property}" class="btn btn-secondary">← Voltar para Imóveis</a>
+		<div class="toolbar" style="margin-bottom: 1.5rem;">
+            <a th:href="@{/property}" class="btn btn-secondary" sec:authorize="hasRole('FUNCIONARIO')">← Voltar para Imóveis</a>
+            
+            <a th:href="@{/portal/minha-conta}" class="btn btn-secondary" sec:authorize="hasRole('CLIENTE')">← Voltar para Minha Conta</a>
         </div>
 
         <div class="card" style="margin-bottom: 2rem; background-color: #eff6ff; border: 1px solid #bfdbfe;">
@@ -76,8 +78,8 @@
                                   th:text="${bill.status}">
                             </span>
                         </td>
-                        <td>
-                            <a th:href="@{/bill/edit/{id}(id=${bill.id})}" class="btn btn-secondary">Detalhes</a>
+						<td>
+                            <a th:href="@{/bill/edit/{id}(id=${bill.id})}" class="btn btn-secondary" sec:authorize="hasRole('FUNCIONARIO')">Detalhes</a>
                         </td>
                     </tr>
                 </tbody>

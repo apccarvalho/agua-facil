@@ -12,4 +12,5 @@ public interface BillService {
     Bill updateBill(Long id, Bill billDetails);
     void deleteBill(Long id);
     Bill gerarFatura(Long readingId, List<Long> servicosIds);
+    List<Bill> getTop5FaturasRecentesDoCliente(Long clienteId);
 }

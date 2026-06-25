@@ -60,6 +60,33 @@
                     </div>
                 </div>
             </div>
+            
+			<div class="card grid-full-width">
+                <p class="section-title">Meus Imóveis</p>
+
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Endereço do Imóvel</th>
+                            <th>Bairro</th>
+                            <th>Categoria</th>
+                            <th>Ações</th> </tr>
+                    </thead>
+                    <tbody>
+                        <tr th:each="imovel : ${client.propriedades}">
+                            <td><strong th:text="${imovel.logradouro} + ', ' + ${imovel.numero}"></strong></td>
+                            <td th:text="${imovel.bairro}"></td>
+                            <td><span class="badge badge-blue" th:text="${imovel.categoria}"></span></td>
+                            
+                            <td>
+                                <a th:href="@{/property/{id}/history(id=${imovel.id})}" class="btn btn-secondary">
+                                    Ver Histórico
+                                </a>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>            
 
             <div class="card grid-full-width">
                 <p class="section-title">Últimas Faturas</p>
@@ -74,18 +101,33 @@
                             <th>Status</th>
                         </tr>
                     </thead>
-                    <tbody>
-                        <tr>
+					<tbody>
+                        <tr th:if="${ultimasFaturas.isEmpty()}">
                             <td colspan="5" class="empty-state">
                                 Nenhuma fatura disponível no momento.
+                            </td>
+                        </tr>
+                        
+                        <tr th:each="fatura : ${ultimasFaturas}">
+                            <td>
+                                <span class="badge badge-blue" th:text="${fatura.mesReferencia}"></span>
+                            </td>
+                            <td th:text="${fatura.consumo} + ' m&sup3;'"></td>
+                            <td class="text-money">
+                                <strong th:text="'R$ ' + ${#numbers.formatDecimal(fatura.valorTotal, 1, 'POINT', 2, 'COMMA')}"></strong>
+                            </td>
+                            <td th:text="${#temporals.format(fatura.dataVencimento, 'dd/MM/yyyy')}"></td>
+                            <td>
+                                <span th:class="'badge ' + 
+                                      (${fatura.status.name() == 'PAGO' ? 'badge-success' : 
+                                       (fatura.status.name() == 'PENDENTE' ? 'badge-warning' : 'badge-danger')})" 
+                                      th:text="${fatura.status}">
+                                </span>
                             </td>
                         </tr>
                     </tbody>
                 </table>
 
-                <div class="table-actions">
-                    <a th:href="@{/cliente/faturas}" class="btn btn-primary">Ver todas as faturas</a>
-                </div>
             </div>
         </div>
     </div>

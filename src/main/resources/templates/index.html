@@ -48,7 +48,7 @@
                 <a th:href="@{/reading}" class="btn btn-primary" style="width: 100%; justify-content: center;">Registrar Leitura</a>
             </div>
 
-            <div class="dashboard-card" sec:authorize="hasAnyRole('CLIENTE', 'FUNCIONARIO')">
+            <div class="dashboard-card" sec:authorize="hasRole('FUNCIONARIO')">
                 <div class="dashboard-icon">📄</div>
                 <h3>Faturas</h3>
                 <p>Consulte de débitos.</p>
@@ -65,7 +65,7 @@
 			<div class="dashboard-card" sec:authorize="hasRole('FUNCIONARIO')">
 			    <div class="dashboard-icon">🛠️</div>
 			    <h3>Serviços e Taxas</h3>
-			    <p>Gerencie o catálogo de serviços adicionais, como religações, manutenções e vistorias.</p>
+			    <p>Gerencie o catálogo de serviços adicionais.</p>
 			    <a th:href="@{/service}" class="btn btn-primary" style="width: 100%; justify-content: center;">Serviços</a>
 			</div>
 

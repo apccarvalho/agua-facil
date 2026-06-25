@@ -80,6 +80,11 @@ public class ClientServiceImpl implements ClientService {
 
         return clientRepository.save(existingClient);
     }
+	
+	@Override
+    public Optional<Client> findByUserEmail(String email) {
+        return clientRepository.findByUserEmail(email);
+    }
 
 	
 }
