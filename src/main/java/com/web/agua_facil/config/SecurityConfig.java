@@ -17,9 +17,11 @@ import com.web.agua_facil.services.impl.UserDetailsServiceImpl;
 public class SecurityConfig {
 
     private final UserDetailsServiceImpl userDetailsService;
+    private final CustomAuthenticationSuccessHandler successHandler;
 
-    public SecurityConfig(UserDetailsServiceImpl userDetailsService) {
+    public SecurityConfig(UserDetailsServiceImpl userDetailsService, CustomAuthenticationSuccessHandler successHandler) {
         this.userDetailsService = userDetailsService;
+        this.successHandler = successHandler;
     }
 
     @Bean
@@ -30,12 +32,27 @@ public class SecurityConfig {
                 //QUALQUER acesso no sistema. 
                 //.anyRequest().permitAll()
             	
-                .requestMatchers("/login", "/css/**", "/js/**", "/images/**", "/styles.css").permitAll()
-                .requestMatchers("/user/**", "/client/**", "/property/**").hasRole("FUNCIONARIO")
-                .requestMatchers("/leitor/**").hasRole("LEITOR")
-                .requestMatchers("/perfil/").hasAnyRole("FUNCIONARIO", "CLIENTE")
-                .requestMatchers("/", "/index").authenticated()
-                .anyRequest().authenticated()
+            		// 1. Acesso Público
+                    .requestMatchers("/login", "/css/**", "/js/**", "/images/**", "/styles.css").permitAll()
+                    
+                    // 2. Acesso Exclusivo do Cliente (Portal)
+                    .requestMatchers("/portal/**").hasRole("CLIENTE")
+
+                    // --- A REGRA ESPECÍFICA DEVE VIR PRIMEIRO ---
+                    // 3. Libera o histórico do imóvel para Funcionários e Clientes
+                    .requestMatchers("/property/*/history").hasAnyRole("FUNCIONARIO", "CLIENTE")
+                    
+                    // 4. Acesso Administrativo (Funcionários) - O curinga /** vem depois!
+                    .requestMatchers("/user/**", "/client/**", "/property/**", "/service/**", "/tariff/**", "/bill/**").hasRole("FUNCIONARIO")
+                    
+                    // 5. Acesso Compartilhado (Leitor e Funcionário)
+                    .requestMatchers("/reading/**").hasAnyRole("FUNCIONARIO", "LEITOR")
+                    
+                    // 6. Dashboard / Home / Index
+                    .requestMatchers("/", "/index").authenticated()
+                    
+                    // 7. Rede de segurança para rotas esquecidas
+                    .anyRequest().authenticated()
                 
             )
 
@@ -45,7 +62,7 @@ public class SecurityConfig {
                 .loginPage("/login")
                 .usernameParameter("email")
                 .passwordParameter("password")
-                .defaultSuccessUrl("/index", true)
+                .successHandler(successHandler)    
                 .failureUrl("/login?error=true")
                 .permitAll()
             )
