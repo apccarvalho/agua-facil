@@ -41,19 +41,22 @@ public class Client {
     @Size(min = 14, max = 14, message = "CPF deve conter exatamente 11 números")
     @Column(name = "cpf", nullable = false, unique = true)
     private String cpf;
-
+    
+    @Size(min = 3, max = 255, message = "Rua deve conter pelo mínimo 03 caracteres")
     @NotBlank(message = "Rua é um campo obrigatório")
     @Column(name = "rua", nullable = false)
     private String rua;
-
+    
     @NotBlank(message = "Número é um campo obrigatório")
     @Column(name = "numero", nullable = false)
     private String numero;
-
+    
+    @Size(min = 3, max = 255, message = "Bairro deve conter pelo mínimo 03 caracteres")
     @NotBlank(message = "Bairro é um campo obrigatório")
     @Column(name = "bairro", nullable = false)
     private String bairro;
-
+    
+    @Size(min = 8, max = 15, message = "Telefone deve conter pelo mínimo 08 caracteres")
     @NotBlank(message = "Telefone é um campo obrigatório")
     @Column(name = "telefone", nullable = false)
     private String telefone;

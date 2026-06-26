@@ -17,6 +17,8 @@ import jakarta.persistence.JoinTable;
 import jakarta.persistence.ManyToMany;
 import jakarta.persistence.OneToOne;
 import jakarta.persistence.Table;
+import jakarta.validation.constraints.DecimalMin;
+import jakarta.validation.constraints.Min;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import lombok.AllArgsConstructor;
@@ -45,10 +47,12 @@ public class Bill {
     @Column(name = "mes_referencia", nullable = false)
     private String mesReferencia;
     
+    @Min(value = 0, message = "O consumo não pode ser negativo")
     @NotNull(message = "Consumo é um campo obrigatório")
     @Column(name = "consumo", nullable = false)
     private Long consumo;
     
+    @DecimalMin(value = "0.0", inclusive = true, message = "O valor total não pode ser negativo")
     @NotNull(message = "Valor total é um campo obrigatório")
     @Column(name = "valor_total", nullable = false, precision = 10, scale = 2) 
     private BigDecimal valorTotal;

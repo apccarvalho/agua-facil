@@ -23,23 +23,27 @@ public class Property {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "property_id")
     private Long id;
-
+    
+    @Size(min = 3, max = 255, message = "Matrícula deve conter pelo mínimo 03 caracteres")
     @NotBlank(message = "A matrícula é obrigatória")
     @Column(name = "matricula", unique = true, nullable = false)
     private String matricula;
-
+    
+    @Size(min = 3, max = 255, message = "Logradouro deve conter pelo mínimo 03 caracteres")
     @NotBlank(message = "O logradouro é obrigatório")
     @Column(name = "logradouro", nullable = false)
     private String logradouro;
-
+    
     @NotBlank(message = "O número é obrigatório")
     @Column(name = "numero", nullable = false)
     private String numero;
 
+    @Size(min = 3, max = 255, message = "Bairro deve conter pelo mínimo 03 caracteres")
     @NotBlank(message = "O bairro é obrigatório")
     @Column(name = "bairro", nullable = false)
     private String bairro;
-
+    
+    @Size(min = 3, max = 255, message = "Cidade deve conter pelo mínimo 03 caracteres")
     @NotBlank(message = "A cidade é obrigatória")
     @Column(name = "cidade", nullable = false)
     private String cidade;

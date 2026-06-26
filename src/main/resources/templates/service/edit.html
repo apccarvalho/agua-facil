@@ -30,8 +30,7 @@
                 <div class="form-group">
                     <label for="nome">Nome do Serviço</label>
                     <input type="text" id="nome" th:field="*{nome}" 
-                           th:class="'form-control' + (${#fields.hasErrors('nome')} ? ' is-invalid' : '')" 
-                           required />
+                           th:class="'form-control' + (${#fields.hasErrors('nome')} ? ' is-invalid' : '')" />
                     <div class="error-msg" th:if="${#fields.hasErrors('nome')}" th:errors="*{nome}"></div>
                 </div>
 
@@ -43,8 +42,7 @@
                 <div class="form-group">
                     <label for="valor">Valor do Serviço (R$)</label>
                     <input type="number" step="0.01" min="0.00" id="valor" th:field="*{valor}" 
-                           th:class="'form-control' + (${#fields.hasErrors('valor')} ? ' is-invalid' : '')" 
-                           required />
+                           th:class="'form-control' + (${#fields.hasErrors('valor')} ? ' is-invalid' : '')" />
                     <span class="label-hint">Lembre-se: alterar o valor aqui não afeta faturas já geradas no passado.</span>
                     <div class="error-msg" th:if="${#fields.hasErrors('valor')}" th:errors="*{valor}"></div>
                 </div>

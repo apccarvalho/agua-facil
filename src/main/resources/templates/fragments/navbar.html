@@ -16,15 +16,15 @@
                 <a th:href="@{/client}">Clientes</a>
             </li>
             
-            <li sec:authorize="hasAnyRole('LEITOR', 'FUNCIONARIO')">
+            <li sec:authorize="hasRole('FUNCIONARIO')">
                 <a th:href="@{/property}">Imóveis</a>
             </li>
 
-            <li sec:authorize="hasRole('FUNCIONARIO')">
+            <li sec:authorize="hasAnyRole('LEITOR', 'FUNCIONARIO')">
                 <a th:href="@{/reading}">Leituras</a>
             </li>
 
-            <li sec:authorize="hasAnyRole('CLIENTE', 'FUNCIONARIO')">
+            <li sec:authorize="hasRole('FUNCIONARIO')">
                 <a th:href="@{/bill}">Faturas</a>
             </li>
             

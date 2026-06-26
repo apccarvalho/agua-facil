@@ -33,22 +33,26 @@
 					    <option value="">Selecione um cliente...</option>
 					    <option th:each="c : ${clientes}" th:value="${c.id}" th:text="${c.user.nome}"></option>
 					</select>
+					<div class="error-msg" th:if="${#fields.hasErrors('cliente')}" th:errors="*{cliente}"></div>
                 </div>
 
                 <h3 class="form-section-title">Endereço</h3>
                 <div class="form-group">
                     <label for="logradouro">Logradouro</label>
                     <input type="text" id="logradouro" th:field="*{logradouro}" class="form-control" />
+                    <div class="error-msg" th:if="${#fields.hasErrors('logradouro')}" th:errors="*{logradouro}"></div>
                 </div>
 
                 <div class="form-row">
                     <div class="form-group">
                         <label for="numero">Número</label>
                         <input type="text" id="numero" th:field="*{numero}" class="form-control" />
+                        <div class="error-msg" th:if="${#fields.hasErrors('numero')}" th:errors="*{numero}"></div>
                     </div>
                     <div class="form-group">
                         <label for="bairro">Bairro</label>
                         <input type="text" id="bairro" th:field="*{bairro}" class="form-control" />
+                        <div class="error-msg" th:if="${#fields.hasErrors('bairro')}" th:errors="*{bairro}"></div>
                     </div>
                 </div>
 
@@ -56,16 +60,19 @@
                     <div class="form-group">
                         <label for="cidade">Cidade</label>
                         <input type="text" id="cidade" th:field="*{cidade}" class="form-control" />
+                        <div class="error-msg" th:if="${#fields.hasErrors('cidade')}" th:errors="*{cidade}"></div>
                     </div>
                     <div class="form-group">
                         <label for="uf">UF</label>
                         <input type="text" id="uf" th:field="*{uf}" class="form-control" maxlength="2" />
+                        <div class="error-msg" th:if="${#fields.hasErrors('uf')}" th:errors="*{uf}"></div>
                     </div>
                 </div>
 
                 <div class="form-group">
                     <label for="cep">CEP</label>
                     <input type="text" id="cep" th:field="*{cep}" class="form-control" />
+                    <div class="error-msg" th:if="${#fields.hasErrors('cep')}" th:errors="*{cep}"></div>
                 </div>
 
                 <div class="form-group">

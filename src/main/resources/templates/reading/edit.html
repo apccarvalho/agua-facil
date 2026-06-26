@@ -46,7 +46,7 @@
 
                     <div class="form-group">
                         <label for="valorMedido">Valor Medido (m&sup3;)</label>
-                        <input type="number" id="valorMedido" th:field="*{valorMedido}" class="form-control" min="0" required />
+                        <input type="number" id="valorMedido" th:field="*{valorMedido}" class="form-control" min="0" />
                         
                         <div class="error-msg" th:if="${#fields.hasErrors('valorMedido')}" th:errors="*{valorMedido}"></div>
                         

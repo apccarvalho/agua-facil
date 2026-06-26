@@ -8,6 +8,7 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 import jakarta.persistence.Entity;
 import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.Size;
 
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
@@ -31,10 +32,12 @@ public class User implements UserDetails {
     @Column(name = "user_id")
     private Long id;
     
+    @Size(min = 3, max = 255, message = "Nome deve conter pelo mínimo 03 caracteres")
     @NotBlank(message = "Nome é um campo obrigatório")
     @Column(name = "nome")
     private String nome;
     
+    @Size(min = 3, max = 255, message = "Email deve conter pelo mínimo 03 caracteres")
     @NotBlank(message = "E-mail é um campo obrigatório")
     @Column(name = "email", unique = true)
     private String email;

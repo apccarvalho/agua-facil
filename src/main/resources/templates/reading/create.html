@@ -23,7 +23,7 @@
                 
                 <div class="form-group">
                     <label for="property">Imóvel (Matrícula — Proprietário)</label>
-                    <select id="property" th:field="*{property}" class="form-control" required>
+                    <select id="property" th:field="*{property}" class="form-control">
                         <option value="">Selecione um imóvel...</option>
                         <option th:each="p : ${properties}" 
                                 th:value="${p.id}" 
@@ -36,13 +36,13 @@
                 <div class="form-row">
                     <div class="form-group">
                         <label for="dataLeitura">Data da Leitura</label>
-                        <input type="date" id="dataLeitura" th:field="*{dataLeitura}" class="form-control" required />
+                        <input type="date" id="dataLeitura" th:field="*{dataLeitura}" class="form-control" />
                         <div class="error-msg" th:if="${#fields.hasErrors('dataLeitura')}" th:errors="*{dataLeitura}"></div>
                     </div>
 
                     <div class="form-group">
                         <label for="valorMedido">Valor Medido (m&sup3;)</label>
-                        <input type="number" id="valorMedido" th:field="*{valorMedido}" class="form-control" placeholder="Ex: 1520" min="0" required />
+                        <input type="number" id="valorMedido" th:field="*{valorMedido}" class="form-control" placeholder="Ex: 1520" min="0"  />
                         
                         <div class="error-msg" th:if="${#fields.hasErrors('valorMedido')}" th:errors="*{valorMedido}"></div>
                         

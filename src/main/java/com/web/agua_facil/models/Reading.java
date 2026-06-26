@@ -2,6 +2,7 @@ package com.web.agua_facil.models;
 
 import java.time.LocalDate;
 import jakarta.persistence.*;
+import jakarta.validation.constraints.Min;
 import jakarta.validation.constraints.NotNull;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -30,6 +31,7 @@ public class Reading {
     @Column(name = "data_leitura", nullable = false)
     private LocalDate dataLeitura;
     
+    @Min(value = 0, message = "O valor não pode ser negativo")
     @NotNull(message = "Valor medido é um campo obrigatório")
     @Column(name = "valor_medido", nullable = false)
     private Long valorMedido;

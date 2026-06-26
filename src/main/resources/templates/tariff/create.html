@@ -28,7 +28,7 @@
                 <div class="form-group">
                     <label for="descricao">Descrição da Faixa</label>
                     <input type="text" id="descricao" th:field="*{descricao}" class="form-control" 
-                           placeholder="Ex: Residencial - Faixa 1 (0 a 10m³)" required />
+                           placeholder="Ex: Residencial - Faixa 1 (0 a 10m³)" />
                     <div class="error-msg" th:if="${#fields.hasErrors('descricao')}" th:errors="*{descricao}"></div>
                 </div>
 
@@ -36,14 +36,14 @@
                     <div class="form-group">
                         <label for="consumoMinimo">Consumo Mínimo (m&sup3;)</label>
                         <input type="number" id="consumoMinimo" th:field="*{consumoMinimo}" class="form-control" 
-                               placeholder="Ex: 0" min="0" required />
+                               placeholder="Ex: 0" min="0" />
                         <div class="error-msg" th:if="${#fields.hasErrors('consumoMinimo')}" th:errors="*{consumoMinimo}"></div>
                     </div>
 
                     <div class="form-group">
                         <label for="consumoMaximo">Consumo Máximo (m&sup3;)</label>
                         <input type="number" id="consumoMaximo" th:field="*{consumoMaximo}" class="form-control" 
-                               placeholder="Ex: 10" min="0" required />
+                               placeholder="Ex: 10" min="0" />
                         <div class="error-msg" th:if="${#fields.hasErrors('consumoMaximo')}" th:errors="*{consumoMaximo}"></div>
                     </div>
                 </div>
@@ -51,13 +51,13 @@
                 <div class="form-group">
                     <label for="valorPorM3">Valor por m&sup3; (R$)</label>
                     <input type="number" id="valorPorM3" th:field="*{valorPorM3}" class="form-control" 
-                           placeholder="Ex: 3.50" step="0.01" min="0" required />
+                           placeholder="Ex: 3.50" step="0.01" min="0" />
                     <div class="error-msg" th:if="${#fields.hasErrors('valorPorM3')}" th:errors="*{valorPorM3}"></div>
                 </div>
                 
                 <div class="form-group">
 			        <label for="categoria">Categoria do Imóvel</label>
-			        <select id="categoria" th:field="*{categoria}" class="form-control" required>
+			        <select id="categoria" th:field="*{categoria}" class="form-control">
 			            <option value="" disabled selected>Selecione uma categoria...</option>
 			            <option th:each="cat : ${categorias}" 
 			                    th:value="${cat}" 
