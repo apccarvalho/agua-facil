@@ -38,7 +38,7 @@
         </ul>
 
         <div class="navbar-user">
-            <span sec:authentication="principal.nome"></span>
+            <span sec:authentication="name"></span>
             
             <form th:action="@{/logout}" method="post" style="margin: 0;">
                 <button type="submit" class="btn-logout" style="border: none; outline: none; font-family: inherit;">
